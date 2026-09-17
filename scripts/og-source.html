@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        width: 1200px;
+        height: 630px;
+        background: #faf7f0;
+        font-family: 'Inter', sans-serif;
+        color: #16181a;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .top {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 0 90px;
+      }
+      .where {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 13px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #6b6a63;
+      }
+      .where i { display: block; width: 34px; height: 1px; background: #c9c0ac; }
+      h1 {
+        font-family: 'Newsreader', Georgia, serif;
+        font-weight: 400;
+        font-size: 96px;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        margin-top: 22px;
+      }
+      .roles {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        margin-top: 30px;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 13px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #0f2b46;
+      }
+      .roles i { display: block; width: 3px; height: 3px; border-radius: 50%; background: rgba(15,43,70,0.4); }
+      .band {
+        background: #0f2b46;
+        color: #faf7f0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        padding: 30px 64px 34px;
+      }
+      .cell { padding-right: 28px; }
+      .cell + .cell { border-left: 1px solid rgba(250,247,240,0.14); padding-left: 28px; }
+      .v {
+        font-family: 'Newsreader', Georgia, serif;
+        font-size: 33px;
+        line-height: 1;
+        letter-spacing: -0.03em;
+        white-space: nowrap;
+      }
+      .l {
+        margin-top: 12px;
+        font-size: 13px;
+        line-height: 1.45;
+        color: rgba(250,247,240,0.66);
+      }
+      .foot {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top">
+      <div class="where"><i></i>Pune, India<i></i></div>
+      <h1>Niraj Chaudhari</h1>
+      <div class="roles">
+        <span>Financial Analysis</span>
+        <i></i>
+        <span>Corporate Finance</span>
+        <i></i>
+        <span>Modelling &amp; Valuation</span>
+        <i></i>
+        <span>Credit Risk</span>
+      </div>
+    </div>
+    <div class="band">
+      <div class="cell">
+        <p class="v">₹268.34</p>
+        <p class="l">DCF fair value derived, per share</p>
+      </div>
+      <div class="cell">
+        <p class="v">10 years</p>
+        <p class="l">Explicit forecast horizon modelled</p>
+      </div>
+      <div class="cell">
+        <p class="v">FY21 to FY25</p>
+        <p class="l">Historical years analysed across projects</p>
+      </div>
+      <div class="cell">
+        <p class="v">3</p>
+        <p class="l">Applied finance and analytics projects</p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Niraj Chaudhari, Resume</title>
+    <meta name="description" content="Niraj Chaudhari, MBA Finance. One-page resume." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* --------------------------------------------------------------------
+         One-page A4 resume. Print-first: pure white paper, near-black ink,
+         deep navy structure, IBM Plex Mono for dates and figures.
+         Source of truth: src/content/profile.js, credentials.js, projects.js.
+      -------------------------------------------------------------------- */
+      :root {
+        --ink: #16181a;
+        --ink-2: #3d4147;
+        --ink-3: #6b6a63;
+        --navy: #0f2b46;
+        --rule: #ddd6c6;
+        --paper: #ffffff;
+        --body: 9.2pt;
+        --leading: 1.35;
+        --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      @page {
+        size: A4;
+        margin: 12mm 14mm;
+      }
+
+      html {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      body {
+        font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+        font-size: var(--body);
+        line-height: var(--leading);
+        color: var(--ink);
+        background: var(--paper);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .mono {
+        font-family: var(--mono);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .sheet {
+        max-width: 210mm;
+        margin: 0 auto;
+      }
+
+      @media screen {
+        html {
+          background: #faf7f0;
+        }
+        .sheet {
+          background: var(--paper);
+          padding: 12mm 14mm;
+        }
+      }
+
+      /* ------------------------------------------------------------- masthead */
+      .masthead {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10mm;
+        padding-bottom: 2.2mm;
+        border-bottom: 1.5px solid var(--navy);
+      }
+
+      .name {
+        font-size: 20pt;
+        font-weight: 600;
+        line-height: 1;
+        letter-spacing: -0.02em;
+        color: var(--navy);
+      }
+
+      .positioning {
+        margin-top: 1.6mm;
+        font-size: 9.6pt;
+        font-weight: 500;
+        letter-spacing: 0.005em;
+        color: var(--ink-2);
+      }
+
+      .contact {
+        padding-top: 0.7mm;
+        text-align: right;
+        font-family: var(--mono);
+        font-size: 7.7pt;
+        line-height: 1.55;
+        color: var(--ink-2);
+        white-space: nowrap;
+      }
+
+      /* ------------------------------------------------------------- sections */
+      .section {
+        margin-top: 1.9mm;
+      }
+
+      .section-title {
+        padding-bottom: 0.8mm;
+        border-bottom: 1px solid var(--rule);
+        margin-bottom: 1.4mm;
+        font-size: 9pt;
+        line-height: 1.2;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--navy);
+      }
+
+      .summary {
+        color: var(--ink-2);
+      }
+
+      /* -------------------------------------------------------------- entries */
+      .entries {
+        list-style: none;
+      }
+
+      .entry + .entry {
+        margin-top: 1.8mm;
+      }
+
+      .entry-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 5mm;
+      }
+
+      .entry-title {
+        font-size: 9.4pt;
+        font-weight: 600;
+        line-height: 1.25;
+        color: var(--ink);
+      }
+
+      .entry-subtitle {
+        font-weight: 400;
+        color: var(--ink-2);
+      }
+
+      .entry-meta {
+        flex: none;
+        font-family: var(--mono);
+        font-size: 7.6pt;
+        letter-spacing: 0.01em;
+        color: var(--ink-3);
+        white-space: nowrap;
+      }
+
+      .entry-body {
+        margin-top: 0.5mm;
+        color: var(--ink-2);
+      }
+
+      .entry-note {
+        margin-top: 0.4mm;
+        font-size: 8.3pt;
+        line-height: 1.4;
+        color: var(--ink-3);
+      }
+
+      .figure {
+        font-family: var(--mono);
+        font-weight: 600;
+        color: var(--navy);
+      }
+
+      .entry-tools {
+        margin-top: 0.5mm;
+        font-size: 7.8pt;
+        color: var(--ink-3);
+      }
+
+      .entry-tools .label {
+        font-family: var(--mono);
+        font-size: 7.1pt;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--navy);
+      }
+
+      .bullets {
+        list-style: none;
+        margin-top: 0.5mm;
+      }
+
+      .bullets li {
+        position: relative;
+        padding-left: 4mm;
+        color: var(--ink-2);
+      }
+
+      .bullets li + li {
+        margin-top: 0.4mm;
+      }
+
+      .bullets li::before {
+        content: '\2022';
+        position: absolute;
+        left: 0.7mm;
+        top: 0;
+        color: var(--navy);
+        font-size: 7.8pt;
+      }
+
+      /* ------------------------------------------------------- facts / lists */
+      .facts {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        column-gap: 3mm;
+        row-gap: 1mm;
+        align-items: baseline;
+      }
+
+      .fact {
+        display: contents;
+      }
+
+      .fact dt {
+        white-space: nowrap;
+        font-family: var(--mono);
+        font-size: 7.2pt;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--navy);
+      }
+
+      .fact dd {
+        color: var(--ink-2);
+      }
+
+      .fact dd.small {
+        font-size: 8.2pt;
+        line-height: 1.4;
+      }
+
+      .cert-meta {
+        font-family: var(--mono);
+        font-size: 7.2pt;
+        color: var(--ink-3);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="sheet">
+      <header class="masthead">
+        <div>
+          <h1 class="name">Niraj Chaudhari</h1>
+          <p class="positioning">MBA Finance | Financial Analysis | Modelling &amp; Valuation</p>
+        </div>
+        <div class="contact">
+          <p>Pune, India | <a href="tel:+918767281554">+91-8767281554</a></p>
+          <p><a href="mailto:nirajchaudhari170503@gmail.com">nirajchaudhari170503@gmail.com</a></p>
+          <p><a href="https://www.linkedin.com/in/niraj-chaudharii">linkedin.com/in/niraj-chaudharii</a></p>
+        </div>
+      </header>
+
+      <section class="section" id="s-summary">
+        <h2 class="section-title">Summary</h2>
+        <p class="summary">
+          MBA Finance candidate at MIT-WPU (expected July 2027, CGPA 8.31) with a data-science foundation from
+          IIT Madras and Great Learning. Builds fully linked financial models from published statements
+          (three-statement forecasting, DCF and relative valuation, working-capital analysis) and applies Python
+          and Power BI to credit-risk and performance analysis. Seeking a financial analysis, corporate finance,
+          FP&amp;A or credit-risk analyst role.
+        </p>
+      </section>
+
+      <section class="section" id="s-projects">
+        <h2 class="section-title">Selected Projects</h2>
+        <ul class="entries">
+          <li class="entry">
+            <div class="entry-head">
+              <h3 class="entry-title">Varun Beverages Ltd.</h3>
+              <span class="entry-meta">Financial Modelling &amp; Valuation</span>
+            </div>
+            <p class="entry-body">
+              <span class="entry-subtitle">Three-statement model and DCF valuation.</span> DCF fair value of
+              <span class="figure">&#8377;268.34 per share</span>, the average of two terminal-value methods,
+              against a market price of &#8377;430.20 at the model date.
+            </p>
+            <p class="entry-tools">
+              <span class="label">Tools</span> Excel | Financial statements | MD&amp;A and concalls | Damodaran
+              sector data
+            </p>
+          </li>
+          <li class="entry">
+            <div class="entry-head">
+              <h3 class="entry-title">Loan Default Analysis &amp; Prediction</h3>
+              <span class="entry-meta">Credit Risk &amp; Financial Analytics</span>
+            </div>
+            <p class="entry-body">
+              <span class="entry-subtitle">Credit-risk analysis on consumer lending data.</span> Feature
+              engineering and classification modelling on high-dimensional borrower data, achieving a
+              <span class="figure">Top 15% ranking (rank ~70 of 500+ participants)</span> on the Zindi platform.
+            </p>
+            <p class="entry-tools">
+              <span class="label">Tools</span> Python | Pandas | NumPy | Scikit-learn | Exploratory data analysis
+            </p>
+          </li>
+          <li class="entry">
+            <div class="entry-head">
+              <h3 class="entry-title">Jubilant Foodworks Ltd.</h3>
+              <span class="entry-meta">Working Capital &amp; Business Finance</span>
+            </div>
+            <p class="entry-body">
+              <span class="entry-subtitle"
+                >Five-year working capital decomposition of India&#8217;s largest QSR operator.</span
+              >
+              Cash conversion cycle narrowed from <span class="figure">&#8722;109 to &#8722;30 days</span> (FY2021
+              to FY2025), a 79-day erosion of the free-funding float.
+            </p>
+            <p class="entry-tools">
+              <span class="label">Tools</span> Excel | PowerPoint | CMIE Prowess | Ratio analysis
+            </p>
+          </li>
+        </ul>
+      </section>
+
+      <section class="section" id="s-experience">
+        <h2 class="section-title">Experience</h2>
+        <ul class="entries">
+          <li class="entry">
+            <div class="entry-head">
+              <h3 class="entry-title">
+                Finance Intern
+                <span class="entry-subtitle">| Defiance Knitting Industries Pvt. Ltd., Ambernath, Mumbai</span>
+              </h3>
+              <span class="entry-meta">Jun 2026 to Jul 2026</span>
+            </div>
+            <ul class="bullets">
+              <li>Assisted the finance team using the company&#8217;s ERP system.</li>
+              <li>
+                Studied the company&#8217;s B2B manufacturing model and its recently launched D2C brand to
+                understand the business strategy behind the move.
+              </li>
+            </ul>
+          </li>
+          <li class="entry">
+            <div class="entry-head">
+              <h3 class="entry-title">Data Science Intern <span class="entry-subtitle">| Datamind Labs</span></h3>
+              <span class="entry-meta">Jan 2025 to Feb 2025</span>
+            </div>
+            <ul class="bullets">
+              <li>
+                Processed and engineered features on high-dimensional borrower datasets, identifying key risk
+                drivers and patterns associated with loan defaults.
+              </li>
+              <li>
+                Collaborated with senior industry professionals to develop predictive classification models on the
+                Zindi platform, achieving a Top 15% ranking (rank ~70 of 500+ participants).
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section class="section" id="s-education">
+        <h2 class="section-title">Education</h2>
+        <ul class="entries">
+          <li class="entry">
+            <div class="entry-head">
+              <h3 class="entry-title">
+                MBA, Finance <span class="entry-subtitle">| MIT World Peace University, Pune</span>
+              </h3>
+              <span class="entry-meta">CGPA 8.31 | Jul 2025 to Jul 2027 (expected)</span>
+            </div>
+            <p class="entry-note">
+              Coursework: Corporate Finance, Financial Modelling, Corporate Valuation, Financial Statement Analysis
+            </p>
+          </li>
+          <li class="entry">
+            <div class="entry-head">
+              <h3 class="entry-title">
+                Post Graduate Program in Data Science and Engineering
+                <span class="entry-subtitle">| Great Learning, Pune</span>
+              </h3>
+              <span class="entry-meta">Aug 2023 to May 2024</span>
+            </div>
+          </li>
+          <li class="entry">
+            <div class="entry-head">
+              <h3 class="entry-title">
+                BBA, Finance <span class="entry-subtitle">| Savitribai Phule Pune University, Pune</span>
+              </h3>
+              <span class="entry-meta">CGPA 9.11 | Jun 2020 to Jul 2023</span>
+            </div>
+          </li>
+          <li class="entry">
+            <div class="entry-head">
+              <h3 class="entry-title">
+                Foundation Level, Programming and Data Science
+                <span class="entry-subtitle">| IIT Madras Degree Program (CODE)</span>
+              </h3>
+              <span class="entry-meta">CGPA 7.8 | 2022</span>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section class="section" id="s-skills">
+        <h2 class="section-title">Skills</h2>
+        <dl class="facts">
+          <div class="fact">
+            <dt>Finance</dt>
+            <dd>
+              Financial Statement Analysis, Financial Modelling, Valuation, DCF, Relative Valuation, Ratio
+              Analysis, Corporate Finance, Credit Risk Assessment
+            </dd>
+          </div>
+          <div class="fact">
+            <dt>Analytics &amp; Tools</dt>
+            <dd>
+              Excel, Python, Pandas, NumPy, Power BI, Statistical Analysis, Exploratory Data Analysis, Predictive
+              Modelling, Forecasting
+            </dd>
+          </div>
+          <div class="fact">
+            <dt>Professional</dt>
+            <dd>Analytical Problem Solving, Critical Thinking, Communication, Time Management, Adaptability</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="section" id="s-certifications">
+        <h2 class="section-title">Certifications</h2>
+        <dl class="facts">
+          <div class="fact">
+            <dt>Finance &amp; Risk</dt>
+            <dd class="small">
+              LinkedIn Learning (2026): Finance Foundations, Introduction to Risk Management
+            </dd>
+          </div>
+          <div class="fact">
+            <dt>Financial Modelling &amp; Excel</dt>
+            <dd class="small">
+              LinkedIn Learning (2026): Excel for Finance: Building a Three-Statement Operating Model, Advanced
+              Excel for Financial Planning and Analysis (FP&amp;A)
+            </dd>
+          </div>
+          <div class="fact">
+            <dt>Analytics &amp; Visualisation</dt>
+            <dd class="small">
+              LinkedIn Learning (2026): Power BI Essential Training, Using Power BI to be a Strategic Financial
+              Partner, Learning Data Analytics: Foundations
+            </dd>
+          </div>
+          <div class="fact">
+            <dt>Data &amp; AI</dt>
+            <dd class="small">
+              Great Learning (2024): Post Graduate Program in Data Science and Engineering | IIT Madras (2022):
+              Foundation Level, BS in Data Science and Applications | LinkedIn Learning (2026): AI in Fintech
+              Essential Training
+            </dd>
+          </div>
+        </dl>
+      </section>
+    </main>
+  </body>
+</html>
