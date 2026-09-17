@@ -135,7 +135,7 @@ export default function CaseStudyPage({ slug: slugProp }) {
           There are three projects on this site. The link may be out of date.
         </p>
         <Link
-          to="/#work"
+          to="/#projects"
           className="mt-8 inline-flex items-center gap-2 border border-inverse bg-inverse px-5 py-3 font-mono text-[0.6875rem] tracking-[0.12em] text-on-inverse uppercase transition-colors hover:border-navy hover:bg-navy hover:text-paper"
         >
           See selected work →

@@ -72,11 +72,11 @@ export default function Hero() {
           </Reveal>
           <Reveal delay={210}>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-2.5">
-              <Action href="#work" variant="solid">
-                View selected work
+              <Action href="#projects" variant="solid">
+                View projects
               </Action>
               <Action href={profile.links.resumePdf} download="Niraj-Chaudhari-Resume.pdf">
-                Download résumé
+                Download resume
               </Action>
               <Action href={`mailto:${profile.links.email}`}>Email</Action>
               <Action href={profile.links.linkedin}>LinkedIn</Action>

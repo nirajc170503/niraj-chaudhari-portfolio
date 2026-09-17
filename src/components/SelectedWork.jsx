@@ -4,8 +4,8 @@ import ProjectCard from './ProjectCard.jsx'
 
 export default function SelectedWork() {
   return (
-    <section id="work" aria-labelledby="work-heading" className="shell scroll-mt-24 py-14 md:py-20">
-      <SectionLabel id="work-heading" label="Selected work" />
+    <section id="projects" aria-labelledby="projects-heading" className="shell py-14 md:py-20">
+      <SectionLabel id="projects-heading" label="Projects" />
 
       <div className="mt-10 space-y-12 md:space-y-14">
         {projects.map((project, i) => (

@@ -2,70 +2,56 @@ import { certificateGroups } from '../content/certificates'
 import SectionLabel from './SectionLabel.jsx'
 import Reveal from './Reveal.jsx'
 
-/** Single certificate row. The entire row links to its own PDF. */
-function CertificateRow({ item }) {
-  return (
-    <li className="border-t border-rule">
-      <a
-        href={item.file}
-        target="_blank"
-        rel="noreferrer noopener"
-        className="group flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-3.5"
-      >
-        <span className="text-[0.9375rem] leading-snug text-ink underline decoration-rule-strong decoration-1 underline-offset-4 transition-colors group-hover:text-navy group-hover:decoration-navy">
-          {item.title}
-          <span className="sr-only"> (opens the certificate PDF in a new tab)</span>
-        </span>
-        <span className="font-mono text-[0.6875rem] tracking-wide whitespace-nowrap text-ink-3 transition-colors group-hover:text-navy">
-          {item.issuer}, {item.date}
-          <span aria-hidden="true" className="ml-2 text-ink-3/70">
-            PDF ↗
-          </span>
-        </span>
-      </a>
-
-      {item.extraFile ? (
-        <a
-          href={item.extraFile}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="link-inline mb-3 inline-block font-mono text-[0.6875rem] tracking-wide"
-        >
-          {item.extraLabel} ↗
-        </a>
-      ) : null}
-    </li>
-  )
+const MONTHS = {
+  Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+  Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
 }
 
-export default function Certificates() {
-  const total = certificateGroups.reduce((n, group) => n + group.items.length, 0)
+/** Sort key from the "Mon YYYY" strings in the manifest. */
+function recency(date) {
+  const [month, year] = date.split(' ')
+  return Number(year) * 12 + (MONTHS[month] ?? 0)
+}
 
+/**
+ * One flat list, newest first.
+ *
+ * The categories live in the data but are not rendered: on the page they added
+ * a second layer of headings without telling a reader anything the certificate
+ * itself does not say. Each row is a single link, so there is one target per
+ * certificate rather than a title and a separate "PDF" affordance pointing at
+ * the same file. Separation comes from spacing, not rules.
+ */
+const certificates = certificateGroups
+  .flatMap((group) => group.items)
+  .sort((a, b) => recency(b.date) - recency(a.date))
+
+export default function Certificates() {
   return (
-    <section id="certificates" aria-labelledby="certificates-heading" className="scroll-mt-24">
+    <section id="certificates" aria-labelledby="certificates-heading">
       <div className="shell py-14 md:py-20">
         <SectionLabel id="certificates-heading" label="Certificates" />
 
-        <Reveal>
-          <p className="mt-6 max-w-2xl text-[0.875rem] leading-relaxed text-ink-3">
-            {total} certificates and programme records. Each title links to the certificate itself.
-          </p>
-        </Reveal>
-
-        <div className="mt-10 grid gap-x-14 gap-y-10 lg:grid-cols-2">
-          {certificateGroups.map((group, i) => (
-            <Reveal key={group.id} delay={i * 50} className="min-w-0">
-              <h3 className="font-mono text-[0.6875rem] tracking-[0.16em] text-navy uppercase">
-                {group.heading}
-              </h3>
-              <ul className="mt-3">
-                {group.items.map((item) => (
-                  <CertificateRow key={item.id} item={item} />
-                ))}
-              </ul>
+        <ul className="mt-10 grid gap-x-14 gap-y-6 lg:grid-cols-2">
+          {certificates.map((item, i) => (
+            <Reveal as="li" key={item.id} delay={Math.min(i, 5) * 40} className="min-w-0">
+              <a
+                href={item.file}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="group block"
+              >
+                <span className="text-[0.9375rem] leading-snug text-ink transition-colors group-hover:text-navy group-hover:underline group-hover:decoration-navy group-hover:decoration-1 group-hover:underline-offset-4">
+                  {item.title}
+                  <span className="sr-only"> (opens the certificate PDF in a new tab)</span>
+                </span>
+                <span className="mt-1 block font-mono text-[0.6875rem] tracking-wide text-ink-3">
+                  {item.issuer}, {item.date}
+                </span>
+              </a>
             </Reveal>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   )

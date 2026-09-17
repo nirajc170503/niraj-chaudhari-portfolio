@@ -1,80 +1,203 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { nav, profile } from '../content/profile'
+import { nav } from '../content/profile'
+import useScrollState from '../hooks/useScrollState.js'
+import scrollToSection from '../utils/scrollToSection.js'
 import ThemeToggle from './ThemeToggle.jsx'
+
+/**
+ * Header.
+ *
+ * Design notes, from the nav research:
+ *  - one slim row (56px), because a header above ~10% of the viewport feels
+ *    oppressive, especially on a phone;
+ *  - scroll spy with a sliding underline, so the nav always says where you
+ *    are without needing hover;
+ *  - the current section name stands in for a wordmark on small screens,
+ *    which is more useful than decorative branding and keeps the left side
+ *    from being empty;
+ *  - no resume button here: the download is already a primary action in the
+ *    hero and again in the contact section, so a third copy was noise.
+ */
+const SECTION_IDS = nav.map((item) => item.to.replace('/#', ''))
+
+function MenuIcon({ open }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      className="h-[1.15rem] w-[1.15rem]"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    >
+      {open ? (
+        <path d="m4.5 4.5 11 11M15.5 4.5l-11 11" />
+      ) : (
+        <path d="M3 6h14M3 10h14M3 14h9" />
+      )}
+    </svg>
+  )
+}
 
 export default function SiteHeader() {
   const { pathname, hash } = useLocation()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const navRef = useRef(null)
+  const linkRefs = useRef({})
+  const [underline, setUnderline] = useState({ left: 0, width: 0, ready: false })
 
-  // Scroll to the hash target on same-page navigation, otherwise to the top.
+  const ids = useMemo(() => SECTION_IDS, [])
+  const { active, progress } = useScrollState(ids, 100)
+
+  const goTo = (id) => {
+    setMenuOpen(false)
+    scrollToSection(id)
+  }
+
+  // Direct URL loads (and cross-page navigation) land on the hash section.
+  // Clicks are handled by goTo above, which also covers the case where the
+  // hash is unchanged and this effect therefore never re-runs.
   useEffect(() => {
     if (hash) {
-      const el = document.getElementById(hash.slice(1))
-      if (el) {
-        requestAnimationFrame(() => el.scrollIntoView({ block: 'start' }))
+      const id = hash.slice(1)
+      if (document.getElementById(id)) {
+        requestAnimationFrame(() => scrollToSection(id))
         return
       }
     }
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
   }, [pathname, hash])
 
-  return (
-    <header className="no-print sticky top-0 z-40 border-b border-rule bg-paper/90 backdrop-blur-md">
-      <div className="shell flex h-14 items-center justify-between gap-4 md:h-16">
-        <Link
-          to="/"
-          aria-label={`${profile.name}, home`}
-          className="flex h-9 w-9 shrink-0 items-center justify-center bg-navy font-mono text-[0.6875rem] font-medium tracking-widest text-paper transition-opacity hover:opacity-85"
-        >
-          {profile.monogram}
-        </Link>
+  // Escape closes the small-screen menu.
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKey = (event) => {
+      if (event.key === 'Escape') setMenuOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [menuOpen])
 
-        <nav aria-label="Primary" className="hidden items-center gap-6 lg:flex">
-          {nav.map((item) => (
-            <Link
-              key={item.label}
-              to={item.to}
-              className="text-[0.8125rem] text-ink-2 transition-colors hover:text-navy"
-            >
-              {item.label}
-            </Link>
-          ))}
+  // Position the sliding underline under the active link.
+  useEffect(() => {
+    const measure = () => {
+      const container = navRef.current
+      const link = active ? linkRefs.current[active] : null
+      if (!container || !link) {
+        setUnderline((prev) => ({ ...prev, ready: false }))
+        return
+      }
+      const c = container.getBoundingClientRect()
+      const l = link.getBoundingClientRect()
+      setUnderline({ left: l.left - c.left, width: l.width, ready: true })
+    }
+    measure()
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [active])
+
+  const activeLabel = nav.find((item) => item.to === `/#${active}`)?.label ?? null
+
+  return (
+    <header className="no-print sticky top-0 z-40 border-b border-rule bg-paper/85 backdrop-blur-md">
+      <div className="shell relative flex h-14 items-center">
+        {/* Small screens: the current section, which doubles as orientation */}
+        <span
+          aria-hidden="true"
+          className={`truncate font-mono text-[0.6875rem] tracking-[0.14em] text-navy uppercase transition-opacity duration-200 lg:hidden ${
+            activeLabel ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          {activeLabel ?? '·'}
+        </span>
+
+        {/* Desktop: centred navigation with a sliding active indicator */}
+        <nav aria-label="Primary" ref={navRef} className="relative mx-auto hidden h-full items-center lg:flex">
+          {nav.map((item) => {
+            const id = item.to.replace('/#', '')
+            return (
+              <Link
+                key={item.label}
+                to={item.to}
+                onClick={() => goTo(id)}
+                ref={(el) => {
+                  linkRefs.current[id] = el
+                }}
+                aria-current={active === id ? 'true' : undefined}
+                className={`px-3.5 text-[0.8125rem] transition-colors ${
+                  active === id ? 'text-navy' : 'text-ink-2 hover:text-ink'
+                }`}
+              >
+                {item.label}
+              </Link>
+            )
+          })}
+          {/* Sits just under the link text, clear of the progress line that
+              runs along the bottom edge of the header. */}
+          <span
+            aria-hidden="true"
+            className="absolute bottom-[0.875rem] left-0 h-px bg-navy transition-[transform,width,opacity] duration-300 ease-out"
+            style={{
+              width: `${underline.width}px`,
+              transform: `translateX(${underline.left}px)`,
+              opacity: underline.ready ? 1 : 0,
+            }}
+          />
         </nav>
 
-        <div className="flex shrink-0 items-center gap-2">
+        <div className="ml-auto flex items-center gap-0.5 lg:absolute lg:right-0 lg:ml-0">
           <ThemeToggle />
-          <a
-            href={profile.links.resumePdf}
-            download="Niraj-Chaudhari-Resume.pdf"
-            className="shrink-0 border border-navy bg-navy px-3.5 py-2 font-mono text-[0.6875rem] tracking-[0.1em] text-paper uppercase transition-colors hover:bg-transparent hover:text-navy"
+          <button
+            type="button"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            className="flex h-9 w-9 items-center justify-center text-ink-2 transition-colors hover:text-navy lg:hidden"
           >
-            <span className="sm:hidden">Résumé ↓</span>
-            <span className="hidden sm:inline">Download résumé</span>
-          </a>
+            <MenuIcon open={menuOpen} />
+          </button>
         </div>
       </div>
 
-      {/* Compact scroll nav for small screens. */}
-      <div className="relative lg:hidden">
-        <nav
-          aria-label="Sections"
-          className="flex gap-1 overflow-x-auto border-t border-rule px-3 py-1 [&::-webkit-scrollbar]:hidden"
-          style={{ scrollbarWidth: 'none' }}
-        >
-          {nav.map((item) => (
-            <Link
-              key={item.label}
-              to={item.to}
-              className="shrink-0 px-2.5 py-3 font-mono text-[0.6875rem] leading-none tracking-[0.1em] text-ink-3 uppercase transition-colors hover:text-navy"
-            >
-              {item.label}
-            </Link>
-          ))}
+      {/* Reading progress, flush with the bottom edge of the header */}
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 h-px origin-left bg-navy/70 transition-transform duration-150 ease-out"
+        style={{ transform: `scaleX(${progress})` }}
+      />
+
+      {/* Small-screen section list */}
+      <div
+        id="mobile-menu"
+        hidden={!menuOpen}
+        className="border-t border-rule bg-paper lg:hidden"
+      >
+        <nav aria-label="Sections" className="shell py-2">
+          <ul>
+            {nav.map((item) => {
+              const id = item.to.replace('/#', '')
+              return (
+                <li key={item.label}>
+                  <Link
+                    to={item.to}
+                    onClick={() => goTo(id)}
+                    className={`flex items-center justify-between border-b border-rule/60 py-3.5 text-[0.9375rem] last:border-b-0 ${
+                      active === id ? 'text-navy' : 'text-ink-2'
+                    }`}
+                  >
+                    {item.label}
+                    {active === id ? (
+                      <span aria-hidden="true" className="h-px w-5 bg-navy" />
+                    ) : null}
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
         </nav>
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-paper to-transparent"
-        />
       </div>
     </header>
   )

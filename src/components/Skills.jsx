@@ -12,13 +12,13 @@ export default function Skills() {
   const rest = skillGroups.filter((group) => !group.primary)
 
   return (
-    <section id="skills" aria-labelledby="skills-heading" className="scroll-mt-24 bg-paper-2">
+    <section id="skills" aria-labelledby="skills-heading" className="bg-paper-2">
       <div className="shell py-14 md:py-20">
         <SectionLabel id="skills-heading" label="Skills" />
 
         {/* Finance: the headline set */}
         <Reveal className="mt-10">
-          <div className="grid gap-6 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-12">
+          <div className="grid gap-6 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-12">
             <div>
               <h3 className="font-display text-[1.5rem] leading-tight tracking-[-0.015em] text-navy">
                 {finance.heading}

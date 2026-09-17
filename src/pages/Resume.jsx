@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom'
 import { profile } from '../content/profile'
 
 /**
- * Résumé page. There is exactly one résumé artefact: the one-page A4 PDF that
+ * Resume page. There is exactly one resume artefact: the one-page A4 PDF that
  * scripts/resume-one-page.html generates. This page serves it, previews it,
  * and offers the download. Nothing is duplicated in markup.
  */
 export default function Resume() {
   useEffect(() => {
-    document.title = 'Résumé, Niraj Chaudhari'
+    document.title = 'Resume, Niraj Chaudhari'
     return () => {
       document.title = 'Niraj Chaudhari, MBA Finance | Financial Analysis, Modelling & Valuation'
     }
@@ -61,14 +61,14 @@ export default function Resume() {
           data={`${profile.links.resumePdf}#view=FitH`}
           type="application/pdf"
           className="h-[70vh] min-h-[32rem] w-full"
-          aria-label={`Résumé of ${profile.name}, PDF document`}
+          aria-label={`Resume of ${profile.name}, PDF document`}
         >
           <div className="p-8 text-center">
             <p className="text-[0.9375rem] text-ink-2">
               Your browser cannot display the PDF inline.
             </p>
             <a href={profile.links.resumePdf} className="link-inline mt-3 inline-block text-[0.9375rem]">
-              Open the résumé PDF
+              Open the resume PDF
             </a>
           </div>
         </object>

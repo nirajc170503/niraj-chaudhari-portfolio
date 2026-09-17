@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import SiteHeader from './components/SiteHeader.jsx'
 import SiteFooter from './components/SiteFooter.jsx'
+import BackToTop from './components/BackToTop.jsx'
 import Home from './pages/Home.jsx'
 import CaseStudyPage from './pages/CaseStudyPage.jsx'
 import Resume from './pages/Resume.jsx'
@@ -21,13 +22,14 @@ export default function App() {
       <main id="main">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/work/:slug" element={<CaseStudyPage />} />
+          <Route path="/projects/:slug" element={<CaseStudyPage />} />
           <Route path="/resume" element={<Resume />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
 
       <SiteFooter />
+      <BackToTop />
     </>
   )
 }

@@ -1,10 +1,10 @@
 import { useTheme } from '../theme/themeContext.js'
 
 /**
- * Toggle between the light and dark palettes. Sits in the header beside the
- * résumé action so it is reachable from every page.
+ * Quiet icon control. Deliberately understated: it sits at the far edge of the
+ * header and should not compete with navigation.
  */
-export default function ThemeToggle() {
+export default function ThemeToggle({ className = '' }) {
   const { isDark, toggle } = useTheme()
   const label = isDark ? 'Switch to light theme' : 'Switch to dark theme'
 
@@ -14,7 +14,7 @@ export default function ThemeToggle() {
       onClick={toggle}
       aria-label={label}
       title={label}
-      className="flex h-9 w-9 shrink-0 items-center justify-center border border-rule-strong text-ink-2 transition-colors hover:border-navy hover:text-navy"
+      className={`flex h-9 w-9 items-center justify-center text-ink-3 transition-colors hover:text-navy ${className}`}
     >
       <svg
         aria-hidden="true"

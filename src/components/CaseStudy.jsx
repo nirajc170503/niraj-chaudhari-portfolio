@@ -18,13 +18,13 @@ export function CaseStudyLayout({ project, children }) {
       <header className="rule-b bg-paper-2">
         <div className="shell py-10 md:py-14">
           <Link
-            to="/#work"
+            to="/#projects"
             className="group -mx-2 inline-flex items-center gap-2 px-2 py-2 font-mono text-[0.6875rem] tracking-[0.12em] text-ink-3 uppercase transition-colors hover:text-navy"
           >
             <span aria-hidden="true" className="transition-transform group-hover:-translate-x-1">
               ←
             </span>
-            All work
+            All projects
           </Link>
 
           <div className="mt-6 grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:gap-14">
@@ -113,7 +113,7 @@ export function CaseSection({ id, index, heading, children }) {
     <Reveal
       as="section"
       id={id}
-      className="mt-10 scroll-mt-28 border-t border-rule pt-7 first:mt-0 first:border-t-0 first:pt-0"
+      className="mt-10 border-t border-rule pt-7 first:mt-0 first:border-t-0 first:pt-0"
     >
       <div className="mb-5 flex items-baseline gap-4">
         <span className="tnum font-mono text-[0.6875rem] tracking-wider text-ink-3">
@@ -252,18 +252,18 @@ export function CaseStudyFooter({ project, next }) {
 
       <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-rule pt-6">
         <Link
-          to="/#work"
+          to="/#projects"
           className="group -mx-2 inline-flex items-center gap-2 px-2 py-2 font-mono text-[0.6875rem] tracking-[0.12em] text-ink uppercase transition-colors hover:text-navy"
         >
           <span aria-hidden="true" className="transition-transform group-hover:-translate-x-1">
             ←
           </span>
-          All work
+          All projects
         </Link>
 
         {next ? (
           <Link
-            to={`/work/${next.slug}`}
+            to={`/projects/${next.slug}`}
             className="group inline-flex items-center gap-3 py-2 text-right transition-colors hover:text-navy"
           >
             <span>

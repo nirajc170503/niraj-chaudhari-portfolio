@@ -32,7 +32,7 @@ export default function ProjectCard({ project, delay = 0 }) {
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <h3 className="font-display text-[clamp(1.5rem,3.4vw,2rem)] leading-[1.12] tracking-[-0.02em] text-ink">
               <Link
-                to={`/work/${project.slug}`}
+                to={`/projects/${project.slug}`}
                 className="transition-colors hover:text-navy focus-visible:text-navy"
               >
                 {project.title}
@@ -61,7 +61,7 @@ export default function ProjectCard({ project, delay = 0 }) {
           </ul>
 
           <Link
-            to={`/work/${project.slug}`}
+            to={`/projects/${project.slug}`}
             className={`group mt-6 inline-flex items-center gap-2 border-b pb-1 font-mono text-[0.6875rem] tracking-[0.12em] uppercase transition-colors ${accent.text} ${accent.rule}`}
           >
             Read the case study

@@ -89,6 +89,12 @@
 
   :root {
     color-scheme: light;
+    /* The header is now a single 56px row at every breakpoint, so one value
+       covers all of them. Anchor scrolling uses this and nothing else:
+       previously scroll-padding-top and per-section scroll-margin compounded,
+       which landed every anchor about 110px too high and left the previous
+       section's tail visible. */
+    --header-h: 4.5rem;
   }
 
   .dark {
@@ -98,7 +104,7 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
+    scroll-padding-top: var(--header-h);
   }
 
   body {
@@ -240,7 +246,7 @@
 }
 
 @media print {
-  /* The downloadable résumé is a generated one-page PDF, so printing a web
+  /* The downloadable resume is a generated one-page PDF, so printing a web
      page is a fallback rather than the primary path. Keep it sensible. */
   @page {
     size: A4;

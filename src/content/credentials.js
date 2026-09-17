@@ -1,6 +1,6 @@
 /**
  * Experience, education, and skills.
- * Sourced from the résumé, the LinkedIn profile export, and the certificate
+ * Sourced from the resume, the LinkedIn profile export, and the certificate
  * PDFs in the workspace. No dates, issuers or titles are inferred.
  */
 

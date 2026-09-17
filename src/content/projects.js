@@ -2,7 +2,7 @@
  * Project content. Every claim below is traceable to a supplied source file:
  *
  *  01  FinalFM&V_Varun Beverages.xlsx
- *  02  Résumé + LinkedIn profile export (Home Credit / Datamind Labs / Zindi)
+ *  02  Resume + LinkedIn profile export (Home Credit / Datamind Labs / Zindi)
  *  03  JFL_Working_Capital_Presentation.pdf
  *
  * Where a figure was not available in the source it is omitted rather than

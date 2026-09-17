@@ -4,7 +4,7 @@ import Reveal from './Reveal.jsx'
 
 export default function Experience() {
   return (
-    <section id="experience" aria-labelledby="experience-heading" className="scroll-mt-24">
+    <section id="experience" aria-labelledby="experience-heading" className="">
       <div className="shell py-14 md:py-20">
         <SectionLabel id="experience-heading" label="Experience" />
 
@@ -14,7 +14,7 @@ export default function Experience() {
               as="article"
               key={`${role.role}-${role.organisation}`}
               delay={i * 60}
-              className="grid gap-5 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12"
+              className="grid gap-5 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-12"
             >
               <div>
                 <p className="font-mono text-[0.6875rem] tracking-[0.1em] text-navy uppercase">
