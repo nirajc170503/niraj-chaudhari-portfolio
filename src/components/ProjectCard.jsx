@@ -75,7 +75,7 @@ export default function ProjectCard({ project, delay = 0 }) {
         {/* headline figure */}
         <div className="min-w-0 lg:w-[13.5rem] lg:border-l lg:border-rule lg:pl-8">
           <span className="kicker mb-2 block text-ink-3">{project.headline.label}</span>
-          <span className="tnum block font-display text-[clamp(2rem,5vw,2.75rem)] leading-none tracking-[-0.03em] text-navy">
+          <span className={`tnum block font-display text-[clamp(2rem,5vw,2.75rem)] leading-none tracking-[-0.03em] ${accent.text}`}>
             {project.headline.value}
           </span>
           <span className="mt-2 block font-mono text-[0.6875rem] tracking-wide text-ink-3">

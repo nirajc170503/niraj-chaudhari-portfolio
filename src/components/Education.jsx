@@ -3,6 +3,9 @@ import SectionLabel from './SectionLabel.jsx'
 import Reveal from './Reveal.jsx'
 
 export default function Education() {
+  /* Accents cycle navy → forest → ochre for the four entries. */
+  const accents = ['text-navy', 'text-forest', 'text-ochre', 'text-navy']
+
   return (
     <section id="education" aria-labelledby="education-heading" className="bg-paper-2">
       <div className="shell py-14 md:py-20">
@@ -32,7 +35,7 @@ export default function Education() {
                 </div>
 
                 <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 lg:flex-col lg:items-end lg:gap-2 lg:text-right">
-                  <p className="font-mono text-[0.6875rem] tracking-[0.1em] text-ink-3 uppercase sm:whitespace-nowrap">
+                  <p className={`font-mono text-[0.6875rem] tracking-[0.1em] uppercase sm:whitespace-nowrap ${accents[i % accents.length]}`}>
                     {item.period}
                   </p>
                   {item.grade ? (

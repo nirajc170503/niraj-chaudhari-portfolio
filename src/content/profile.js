@@ -24,8 +24,12 @@ export const profile = {
   headline: 'MBA Finance | Financial Analysis | Modelling & Valuation',
 
   positioning:
-    'MBA Finance candidate at MIT World Peace University, building financial models from published ' +
-    'statements and company filings.',
+    'MBA Finance candidate at MIT World Peace University, building fully linked financial models from ' +
+    'published statements. That work spans three-statement forecasting, DCF valuation and credit-risk ' +
+    'analysis, reported against what the numbers actually support.',
+
+  /** When Niraj is open to roles, shown as a status pill in the hero and contact. */
+  availability: 'Open to roles from mid 2027',
 
   intro:
     'My work starts with a real business: rebuilding its financials from the statements, forecasting ' +
@@ -33,6 +37,14 @@ export const profile = {
     'three-statement model and DCF for Varun Beverages, a five-year working capital decomposition for ' +
     'Jubilant Foodworks, and credit risk modelling on borrower data at Datamind Labs. The quantitative ' +
     'foundation comes from IIT Madras and Great Learning; the finance training is what I am pursuing now.',
+
+  /** Second About paragraph: the route to the present. Sourced from the resume. */
+  journey:
+    'The route here runs through a BBA in Finance at Savitribai Phule Pune University, then a deliberate ' +
+    'detour into data science with IIT Madras and Great Learning. Two internships brought the two ' +
+    'together: credit-risk modelling on borrower data at Datamind Labs, and a finance internship at ' +
+    'Defiance Knitting Industries. The MBA at MIT World Peace University is where it converges, into the ' +
+    'linked models, valuations and working capital analysis on this site.',
 
   /** Tighter variant used on the print resume, where space is the constraint. */
   resumeSummary:
@@ -53,16 +65,15 @@ export const profile = {
   },
 
   /**
-   * Portrait for the About section.
-   *
-   * To publish a photo: save it as `public/portrait.jpg` (portrait crop, 4:5,
-   * around 800x1000px, under 200KB) and it appears automatically. Until the
-   * file exists the frame renders a designed title plate instead, so the
-   * layout never shows a broken image.
+   * Hero portrait. The frame adapts to the photo's own proportions and never
+   * crops it. To swap the photo, replace public/hero-photo.jpg (keep the same
+   * filename) or update `src` and the width/height pair here.
    */
   photo: {
-    src: '/portrait.jpg',
+    src: '/hero-photo.jpg',
     alt: 'Portrait of Niraj Chaudhari',
+    width: 1200,
+    height: 1630,
   },
 }
 
@@ -71,7 +82,6 @@ export const nav = [
   { label: 'Projects', to: '/#projects' },
   { label: 'Experience', to: '/#experience' },
   { label: 'Education', to: '/#education' },
-  { label: 'Certificates', to: '/#certificates' },
   { label: 'Skills', to: '/#skills' },
   { label: 'Contact', to: '/#contact' },
 ]

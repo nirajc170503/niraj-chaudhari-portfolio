@@ -17,17 +17,38 @@
         font-family: 'Inter', sans-serif;
         color: #16181a;
         display: flex;
-        flex-direction: column;
         overflow: hidden;
       }
-      .top {
+      .left {
+        width: 420px;
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f4f0e6;
+        border-right: 1px solid #ddd6c6;
+      }
+      .frame {
+        width: 264px;
+        height: 330px;
+        background: #faf7f0;
+        border: 1px solid #c9c0ac;
+        padding: 8px;
+      }
+      .frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .right {
         flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
-        padding: 0 90px;
+        padding: 0 54px;
       }
       .where {
         display: flex;
@@ -43,17 +64,18 @@
       h1 {
         font-family: 'Newsreader', Georgia, serif;
         font-weight: 400;
-        font-size: 96px;
+        font-size: 88px;
         line-height: 1;
         letter-spacing: -0.04em;
-        margin-top: 22px;
+        margin-top: 20px;
+        white-space: nowrap;
       }
       .roles {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 18px;
-        margin-top: 30px;
+        margin-top: 28px;
         font-family: 'IBM Plex Mono', monospace;
         font-size: 13px;
         letter-spacing: 0.14em;
@@ -62,38 +84,38 @@
       }
       .roles i { display: block; width: 3px; height: 3px; border-radius: 50%; background: rgba(15,43,70,0.4); }
       .band {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
         background: #0f2b46;
         color: #faf7f0;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        padding: 30px 64px 34px;
+        padding: 26px 56px 30px;
       }
-      .cell { padding-right: 28px; }
-      .cell + .cell { border-left: 1px solid rgba(250,247,240,0.14); padding-left: 28px; }
+      .cell { padding-right: 26px; }
+      .cell + .cell { border-left: 1px solid rgba(250,247,240,0.14); padding-left: 26px; }
       .v {
         font-family: 'Newsreader', Georgia, serif;
-        font-size: 33px;
+        font-size: 32px;
         line-height: 1;
         letter-spacing: -0.03em;
         white-space: nowrap;
       }
       .l {
-        margin-top: 12px;
+        margin-top: 10px;
         font-size: 13px;
         line-height: 1.45;
         color: rgba(250,247,240,0.66);
       }
-      .foot {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 0;
-      }
     </style>
   </head>
   <body>
-    <div class="top">
+    <div class="left">
+      <div class="frame"><img src="{{PORTRAIT}}" alt="" /></div>
+    </div>
+    <div class="right">
       <div class="where"><i></i>Pune, India<i></i></div>
       <h1>Niraj Chaudhari</h1>
       <div class="roles">

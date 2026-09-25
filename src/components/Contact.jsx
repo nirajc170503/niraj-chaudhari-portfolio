@@ -3,23 +3,26 @@ import Reveal from './Reveal.jsx'
 import { DownloadIcon, LinkedInIcon, MailIcon, PhoneIcon } from './icons.jsx'
 
 /**
- * Contact. Icon-only actions on a single row: the mail, LinkedIn and phone
- * marks are recognisable without a label, and the download arrow carries the
- * resume. Each one keeps an aria-label and a title for keyboard and hover use.
- * The block is centred so it balances the hero and closes the page cleanly.
+ * Contact. One clear action up front (download the resume), then the direct
+ * ways to reach Niraj as labelled links. Icons sit inline with their labels
+ * rather than in isolated boxes, so the block reads as one considered unit.
+ * The section is centred to balance the hero and close the page cleanly.
  */
-function IconAction({ href, label, icon, external = false, download }) {
+function ContactLink({ href, label, icon, external = false, download }) {
   return (
     <li>
       <a
         href={href}
-        aria-label={label}
-        title={label}
         {...(external ? { target: '_blank', rel: 'noreferrer noopener' } : {})}
         {...(download ? { download } : {})}
-        className="flex h-12 w-12 items-center justify-center border border-on-inverse/25 text-on-inverse transition-colors hover:border-on-inverse/70 hover:bg-on-inverse/10"
+        className="group inline-flex items-center gap-2.5 text-[0.9375rem] text-on-inverse/75 transition-colors hover:text-on-inverse"
       >
-        {icon}
+        <span aria-hidden="true" className="text-on-inverse/50 transition-colors group-hover:text-on-inverse">
+          {icon}
+        </span>
+        <span className="underline decoration-on-inverse/25 decoration-1 underline-offset-4 transition-colors group-hover:decoration-on-inverse">
+          {label}
+        </span>
       </a>
     </li>
   )
@@ -51,28 +54,33 @@ export default function Contact() {
           </Reveal>
 
           <Reveal delay={110}>
-            <ul className="mt-9 flex flex-wrap items-center justify-center gap-2.5">
-              <IconAction
+            <a
+              href={profile.links.resumePdf}
+              download="Niraj-Chaudhari-Resume.pdf"
+              className="mt-9 inline-flex items-center gap-2.5 border border-on-inverse/40 px-6 py-3 text-[0.8125rem] text-on-inverse transition-colors hover:bg-on-inverse hover:text-inverse"
+            >
+              <DownloadIcon className="h-4 w-4" />
+              Download resume
+            </a>
+          </Reveal>
+
+          <Reveal delay={160}>
+            <ul className="mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+              <ContactLink
                 href={`mailto:${profile.links.email}`}
-                label={`Email ${profile.links.email}`}
-                icon={<MailIcon className="h-[1.15rem] w-[1.15rem]" />}
+                label={profile.links.email}
+                icon={<MailIcon className="h-[1.05rem] w-[1.05rem]" />}
               />
-              <IconAction
+              <ContactLink
                 href={profile.links.linkedin}
-                label="LinkedIn profile"
-                icon={<LinkedInIcon className="h-[1.15rem] w-[1.15rem]" />}
+                label="LinkedIn"
+                icon={<LinkedInIcon className="h-[1.05rem] w-[1.05rem]" />}
                 external
               />
-              <IconAction
+              <ContactLink
                 href={`tel:${profile.links.phone.replace(/[^+\d]/g, '')}`}
-                label={`Phone ${profile.links.phone}`}
-                icon={<PhoneIcon className="h-[1.15rem] w-[1.15rem]" />}
-              />
-              <IconAction
-                href={profile.links.resumePdf}
-                label="Download resume (PDF)"
-                icon={<DownloadIcon className="h-[1.15rem] w-[1.15rem]" />}
-                download="Niraj-Chaudhari-Resume.pdf"
+                label={profile.links.phone}
+                icon={<PhoneIcon className="h-[1.05rem] w-[1.05rem]" />}
               />
             </ul>
           </Reveal>

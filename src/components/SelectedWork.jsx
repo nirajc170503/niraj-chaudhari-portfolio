@@ -12,11 +12,6 @@ export default function SelectedWork() {
           <ProjectCard key={project.slug} project={project} delay={i * 60} />
         ))}
       </div>
-
-      <p className="mt-12 text-[0.8125rem] leading-relaxed text-ink-3">
-        These are academic and self-directed projects. They demonstrate the methods described, and are not client
-        engagements.
-      </p>
     </section>
   )
 }

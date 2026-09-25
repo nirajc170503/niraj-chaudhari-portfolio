@@ -11,6 +11,7 @@ import Reveal from './Reveal.jsx'
  */
 export function CaseStudyLayout({ project, children }) {
   const sections = project.sections
+  const accent = { navy: 'text-navy', forest: 'text-forest', ochre: 'text-ochre' }[project.accent] ?? 'text-navy'
 
   return (
     <div className="pb-4">
@@ -44,7 +45,7 @@ export function CaseStudyLayout({ project, children }) {
 
             <div className="min-w-0 border-t border-rule pt-5 lg:border-t-0 lg:border-l lg:border-rule lg:pt-0 lg:pl-8">
               <p className="kicker mb-2 text-ink-3">{project.headline.label}</p>
-              <p className="tnum font-display text-[clamp(2.5rem,6vw,3.5rem)] leading-none tracking-[-0.03em] text-navy">
+              <p className={`tnum font-display text-[clamp(2.5rem,6vw,3.5rem)] leading-none tracking-[-0.03em] ${accent}`}>
                 {project.headline.value}
               </p>
               <p className="mt-2 font-mono text-[0.6875rem] tracking-wide text-ink-3">

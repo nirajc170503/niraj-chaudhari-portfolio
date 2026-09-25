@@ -3,6 +3,13 @@ import SectionLabel from './SectionLabel.jsx'
 import Reveal from './Reveal.jsx'
 
 export default function Experience() {
+  /* Accents cycle navy → forest for the two roles, matching the project
+     cards' direction. */
+  const accents = [
+    { period: 'text-navy', dash: 'bg-navy' },
+    { period: 'text-forest', dash: 'bg-forest' },
+  ]
+
   return (
     <section id="experience" aria-labelledby="experience-heading" className="">
       <div className="shell py-14 md:py-20">
@@ -17,7 +24,7 @@ export default function Experience() {
               className="grid gap-5 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-12"
             >
               <div>
-                <p className="font-mono text-[0.6875rem] tracking-[0.1em] text-navy uppercase">
+                <p className={`font-mono text-[0.6875rem] tracking-[0.1em] uppercase ${accents[i % accents.length].period}`}>
                   {role.period}
                 </p>
                 <p className="mt-2.5 inline-block border border-rule-strong px-2.5 py-1 font-mono text-[0.6875rem] tracking-[0.1em] text-ink-2 uppercase">
@@ -37,7 +44,10 @@ export default function Experience() {
                 <ul className="mt-5 space-y-2.5">
                   {role.points.map((point) => (
                     <li key={point} className="flex gap-3 text-[0.9375rem] leading-relaxed text-ink-2">
-                      <span aria-hidden="true" className="mt-[0.6rem] h-px w-4 shrink-0 bg-rule-strong" />
+                      <span
+                        aria-hidden="true"
+                        className={`mt-[0.6rem] h-px w-4 shrink-0 ${accents[i % accents.length].dash}`}
+                      />
                       <span>{point}</span>
                     </li>
                   ))}
