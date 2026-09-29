@@ -129,7 +129,7 @@ export const dcf = {
 }
 
 /** Enterprise-to-equity bridge, ₹ crore. */
-export const bridge = {
+const bridgeInputs = {
   pvExplicitFcff: 22563.02,
   pvTerminalPerpetuity: 60135.7,
   enterpriseValuePerpetuity: 82698.72,
@@ -145,7 +145,27 @@ export const bridge = {
   valuePerShareExit: 292.72,
   valuePerShareAverage: 268.34,
   cmp: 430.2,
-  impliedUpside: -43.29,
+}
+
+/** Gap between the model's value and the market price, in percent. */
+function vsMarket(value) {
+  return ((value / bridgeInputs.cmp) - 1) * 100
+}
+
+/**
+ * Enterprise-to-equity bridge, ₹ crore.
+ *
+ * `impliedUpside` is derived, not transcribed, so it cannot drift from the
+ * value it is measured against. The site's headline number is the AVERAGE of
+ * the two terminal value methods: 268.34 against a 430.20 market price, which
+ * is 37.6% downside. The wider 43.3% gap belongs to the perpetuity method
+ * alone and is reported separately as such.
+ */
+export const bridge = {
+  ...bridgeInputs,
+  impliedUpside: vsMarket(bridgeInputs.valuePerShareAverage),
+  impliedUpsidePerpetuity: vsMarket(bridgeInputs.valuePerSharePerpetuity),
+  impliedUpsideExit: vsMarket(bridgeInputs.valuePerShareExit),
 }
 
 /**
@@ -199,4 +219,40 @@ export const assumptionDrivers = {
   receivablePctOfRevenue: [5.7, 5.6, 5.55, 5.5, 5.45],
   payablePctOfRevenue: [6.4, 6.45, 6.5, 6.5, 6.5],
   longTermBorrowings: [600, 620, 640, 660, 680],
+}
+
+/* ---------------------------------------------------------------------------
+   Number formatting, shared with the case-study copy.
+
+   Financial tables follow the accounting convention of showing negatives in
+   parentheses, so a reader never has to work out whether a minus sign or a
+   bracket is a deduction.
+--------------------------------------------------------------------------- */
+
+/** 22563.02 -> '22,563.02' */
+export function fmt2(value) {
+  return value.toLocaleString('en-IN', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
+}
+
+/** 2.25 -> '2.25x', 16 -> '16.0x' */
+export function fmtX(value) {
+  return `${value.toFixed(2)}x`
+}
+
+/** -2024.12 -> '(2,024.12)' */
+export function fmtParen(value) {
+  return value < 0 ? `(${fmt2(Math.abs(value))})` : fmt2(value)
+}
+
+/** -37.62 -> '37.6%' */
+export function fmtPct(value, digits = 1) {
+  return `${Math.abs(value).toFixed(digits)}%`
+}
+
+/** Signed percentage, for figures that must show direction. */
+export function fmtPctSigned(value, digits = 1) {
+  return `${value > 0 ? '+' : value < 0 ? '−' : ''}${Math.abs(value).toFixed(digits)}%`
 }

@@ -167,7 +167,7 @@ export default function RevenueMarginChart() {
         </svg>
       ) : null}
 
-      <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[0.6875rem] tracking-wide text-ink-3">
+      <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-xs tracking-wide text-ink-3">
         <span className="flex items-center gap-2">
           <span aria-hidden="true" className="inline-block h-3 w-3 bg-navy" />
           Revenue, ₹ Cr
@@ -183,20 +183,23 @@ export default function RevenueMarginChart() {
       </div>
 
       <details className="mt-4 border-t border-rule pt-3">
-        <summary className="cursor-pointer font-mono text-[0.6875rem] tracking-[0.1em] text-ink-3 uppercase hover:text-ink">
+        <summary className="cursor-pointer font-mono text-xs tracking-[0.1em] text-ink-3 uppercase hover:text-ink">
           Read as a table
         </summary>
         <div className="mt-3 overflow-x-auto">
           <table className="w-full min-w-[34rem] border-collapse text-left text-[0.8125rem]">
+            <caption className="sr-only">
+              Revenue and EBITDA margin by year, CY2020A to CY2030E, in ₹ crore and per cent
+            </caption>
             <thead>
               <tr className="border-b border-rule-strong">
-                <th scope="col" className="py-2 pr-4 font-mono text-[0.6875rem] tracking-wider text-ink-3 uppercase">
+                <th scope="col" className="py-2 pr-4 font-mono text-xs tracking-wider text-ink-3 uppercase">
                   Year
                 </th>
-                <th scope="col" className="py-2 pr-4 text-right font-mono text-[0.6875rem] tracking-wider text-ink-3 uppercase">
+                <th scope="col" className="py-2 pr-4 text-right font-mono text-xs tracking-wider text-ink-3 uppercase">
                   Revenue
                 </th>
-                <th scope="col" className="py-2 text-right font-mono text-[0.6875rem] tracking-wider text-ink-3 uppercase">
+                <th scope="col" className="py-2 text-right font-mono text-xs tracking-wider text-ink-3 uppercase">
                   EBITDA margin
                 </th>
               </tr>

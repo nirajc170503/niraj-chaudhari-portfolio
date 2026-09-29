@@ -26,7 +26,7 @@ export default function Education() {
 
                   {item.coursework.length > 0 ? (
                     <p className="mt-4 max-w-3xl text-[0.8125rem] leading-relaxed text-ink-3">
-                      <span className="font-mono text-[0.6875rem] tracking-wider uppercase">
+                      <span className="font-mono text-xs tracking-wider uppercase">
                         Coursework:{' '}
                       </span>
                       {item.coursework.join(', ')}
@@ -35,7 +35,7 @@ export default function Education() {
                 </div>
 
                 <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 lg:flex-col lg:items-end lg:gap-2 lg:text-right">
-                  <p className={`font-mono text-[0.6875rem] tracking-[0.1em] uppercase sm:whitespace-nowrap ${accents[i % accents.length]}`}>
+                  <p className={`font-mono text-xs tracking-[0.1em] uppercase sm:whitespace-nowrap ${accents[i % accents.length]}`}>
                     {item.period}
                   </p>
                   {item.grade ? (
@@ -43,7 +43,7 @@ export default function Education() {
                       <span className="tnum font-display text-[1.375rem] leading-none text-navy">
                         {item.grade.value}
                       </span>
-                      <span className="ml-2 font-mono text-[0.6875rem] tracking-wider text-ink-3 uppercase">
+                      <span className="ml-2 font-mono text-xs tracking-wider text-ink-3 uppercase">
                         {item.grade.label}
                       </span>
                     </p>

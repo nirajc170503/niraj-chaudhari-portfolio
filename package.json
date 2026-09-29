@@ -6,8 +6,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "preview": "vite preview --port 4173 --strictPort",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "verify": "node scripts/verify.mjs",
+    "check:layout": "node scripts/check-layout.mjs",
+    "check": "npm run lint && npm run test && npm run build"
   },
   "dependencies": {
     "react": "^19.2.8",
@@ -19,9 +25,15 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
+    "@vitest/coverage-v8": "^4.1.11",
     "oxlint": "^1.81.0",
     "postcss": "^8.5.28",
     "tailwindcss": "^4.3.3",
-    "vite": "^8.3.0"
-  }
+    "vite": "^8.3.0",
+    "vitest": "^4.1.11"
+  },
+  "engines": {
+    "node": ">=22.4"
+  },
+  "description": "Portfolio site for Niraj Chaudhari: financial modelling, valuation and credit-risk work."
 }

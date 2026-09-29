@@ -16,7 +16,7 @@ export function Figure({ title, subtitle, children, note, source }) {
       {children}
       {note ? <p className="mt-3 text-[0.75rem] leading-relaxed text-ink-3">{note}</p> : null}
       {source ? (
-        <p className="mt-2 font-mono text-[0.6875rem] tracking-wide text-ink-3">{source}</p>
+        <p className="mt-2 font-mono text-xs tracking-wide text-ink-3">{source}</p>
       ) : null}
     </figure>
   )

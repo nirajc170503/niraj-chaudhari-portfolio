@@ -24,10 +24,10 @@ export default function Experience() {
               className="grid gap-5 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-12"
             >
               <div>
-                <p className={`font-mono text-[0.6875rem] tracking-[0.1em] uppercase ${accents[i % accents.length].period}`}>
+                <p className={`font-mono text-xs tracking-[0.1em] uppercase ${accents[i % accents.length].period}`}>
                   {role.period}
                 </p>
-                <p className="mt-2.5 inline-block border border-rule-strong px-2.5 py-1 font-mono text-[0.6875rem] tracking-[0.1em] text-ink-2 uppercase">
+                <p className="mt-2.5 inline-block border border-rule-strong px-2.5 py-1 font-mono text-xs tracking-[0.1em] text-ink-2 uppercase">
                   {role.type}
                 </p>
                 {role.location ? (
@@ -57,7 +57,7 @@ export default function Experience() {
                   {role.skills.map((skill) => (
                     <li
                       key={skill}
-                      className="border border-rule bg-paper-2 px-2.5 py-1 font-mono text-[0.6875rem] tracking-wide text-ink-2"
+                      className="border border-rule bg-paper-2 px-2.5 py-1 font-mono text-xs tracking-wide text-ink-2"
                     >
                       {skill}
                     </li>

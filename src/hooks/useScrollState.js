@@ -24,7 +24,7 @@ export default function useScrollState(ids, line = 100) {
       // At the bottom, the last section is active even if its top never
       // crosses the resolution line.
       if (scrollable > 0 && window.scrollY >= scrollable - 2) {
-        setState({ active: ids[ids.length - 1], progress })
+        setState({ active: ids.at(-1), progress })
         return
       }
 

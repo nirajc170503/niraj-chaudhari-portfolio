@@ -39,7 +39,7 @@ export default function ProjectCard({ project, delay = 0 }) {
               </Link>
             </h3>
             {project.flagship ? (
-              <span className="border border-navy/30 px-2 py-0.5 font-mono text-[0.5625rem] tracking-[0.12em] text-navy uppercase">
+              <span className="border border-navy/30 px-2 py-0.5 font-mono text-xs tracking-[0.1em] text-navy uppercase">
                 Flagship
               </span>
             ) : null}
@@ -53,7 +53,7 @@ export default function ProjectCard({ project, delay = 0 }) {
             {project.method.map((item) => (
               <li
                 key={item}
-                className="border border-rule bg-paper-2 px-2.5 py-1 font-mono text-[0.6875rem] tracking-wide text-ink-2"
+                className="border border-rule bg-paper-2 px-2.5 py-1 font-mono text-xs tracking-wide text-ink-2"
               >
                 {item}
               </li>
@@ -62,7 +62,7 @@ export default function ProjectCard({ project, delay = 0 }) {
 
           <Link
             to={`/projects/${project.slug}`}
-            className={`group mt-6 inline-flex items-center gap-2 border-b pb-1 font-mono text-[0.6875rem] tracking-[0.12em] uppercase transition-colors ${accent.text} ${accent.rule}`}
+            className={`group mt-6 inline-flex items-center gap-2 border-b py-1.5 font-mono text-xs tracking-[0.12em] uppercase transition-colors ${accent.text} ${accent.rule}`}
           >
             Read the case study
             <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
@@ -78,7 +78,7 @@ export default function ProjectCard({ project, delay = 0 }) {
           <span className={`tnum block font-display text-[clamp(2rem,5vw,2.75rem)] leading-none tracking-[-0.03em] ${accent.text}`}>
             {project.headline.value}
           </span>
-          <span className="mt-2 block font-mono text-[0.6875rem] tracking-wide text-ink-3">
+          <span className="mt-2 block font-mono text-xs tracking-wide text-ink-3">
             {project.headline.unit}
           </span>
           <p className="mt-3 text-[0.8125rem] leading-relaxed text-ink-3">{project.headline.context}</p>

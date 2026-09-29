@@ -59,6 +59,11 @@ export default function SiteHeader() {
   // Direct URL loads (and cross-page navigation) land on the hash section.
   // Clicks are handled by goTo above, which also covers the case where the
   // hash is unchanged and this effect therefore never re-runs.
+  //
+  // Both values are read from useLocation rather than captured, and reacting to
+  // exactly these two is the point: the effect exists to put the viewport in the
+  // right place when the URL changes, not on every render.
+  // oxlint-disable-next-line react/exhaustive-deps
   useEffect(() => {
     if (hash) {
       const id = hash.slice(1)
@@ -106,14 +111,16 @@ export default function SiteHeader() {
         {/* Small screens: the current section, which doubles as orientation */}
         <span
           aria-hidden="true"
-          className={`truncate font-mono text-[0.6875rem] tracking-[0.14em] text-navy uppercase transition-opacity duration-200 lg:hidden ${
+          className={`truncate font-mono text-xs tracking-[0.14em] text-navy uppercase transition-opacity duration-200 lg:hidden ${
             activeLabel ? 'opacity-100' : 'opacity-0'
           }`}
         >
           {activeLabel ?? '·'}
         </span>
 
-        {/* Desktop: centred navigation with a sliding active indicator */}
+        {/* Desktop: centred navigation with a sliding active indicator.
+            The links fill the header height so the whole strip is the tap
+            target, rather than a 20px band of text floating inside it. */}
         <nav aria-label="Primary" ref={navRef} className="relative mx-auto hidden h-full items-center lg:flex">
           {nav.map((item) => {
             const id = item.to.replace('/#', '')
@@ -126,7 +133,7 @@ export default function SiteHeader() {
                   linkRefs.current[id] = el
                 }}
                 aria-current={active === id ? 'true' : undefined}
-                className={`px-3.5 text-[0.8125rem] transition-colors ${
+                className={`flex h-full items-center px-3.5 text-[0.8125rem] transition-colors ${
                   active === id ? 'text-navy' : 'text-ink-2 hover:text-ink'
                 }`}
               >

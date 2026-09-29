@@ -41,7 +41,7 @@ export default function About() {
                   key={row.label}
                   className="grid grid-cols-[7rem_minmax(0,1fr)] gap-x-6 border-t border-rule py-4"
                 >
-                  <dt className="pt-0.5 text-right font-mono text-[0.6875rem] tracking-[0.12em] text-ink-3 uppercase">
+                  <dt className="pt-0.5 text-right font-mono text-xs tracking-[0.12em] text-ink-3 uppercase">
                     {row.label}
                   </dt>
                   <dd className="text-[0.9375rem] leading-relaxed text-ink-2">{row.value}</dd>

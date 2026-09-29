@@ -5,8 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#faf7f0" />
     <script>
-      // Applied before first paint so there is no flash of the wrong theme.
+      // Runs before first paint, in one pass:
+      //  1. `js` on <html> opts the CSS into the scroll-reveal hidden state and
+      //     anything else that should only apply once scripting is alive. If the
+      //     bundle never arrives, that class is never added and content is
+      //     simply visible instead of stuck at opacity 0.
+      //  2. The theme is resolved here too, so there is no flash of the wrong
+      //     palette.
       (function () {
+        document.documentElement.classList.add('js')
         try {
           var stored = localStorage.getItem('nc-theme')
           var dark = stored
@@ -47,12 +54,164 @@
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+    <!-- The portrait is the Largest Contentful Paint element on the home page,
+         so it is discovered by the preload scanner in the same HTML rather than
+         being discovered late by the module graph. `imagesrcset` lets the
+         browser pick a size-appropriate WebP and skip the full-size JPEG.
+         `as="image"` also makes LCP, not just download, start early. -->
+    <link
+      rel="preload"
+      as="image"
+      href="/hero-photo-1200.webp"
+      imagesrcset="/hero-photo-480.webp 480w, /hero-photo-768.webp 768w, /hero-photo-1200.webp 1200w"
+      imagesizes="(min-width: 1024px) 360px, 92vw"
+      fetchpriority="high"
+    />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+
+    <!--
+      No font file is preloaded here on purpose. Preloading needs an exact,
+      versioned woff2 URL out of the Google Fonts CSS, and that URL changes
+      whenever the family is republished. A stale one fails as a 404 that
+      returns HTML, which the browser then rejects with a MIME error and the
+      font falls back anyway. The stylesheet link below already puts the font
+      request ahead of the render-blocking CSS, which is the part that matters.
+    -->
+
+    <!--
+      Static shell.
+
+      #root ships with real content and its own self-contained styles. React
+      replaces it on mount, and because it mirrors the hero the handover is
+      visually near-invisible.
+
+      It exists because an empty #root turns any failure into a white page: no
+      JavaScript, a blocked or failed bundle, or a crash before the first
+      commit. This way the page degrades to a readable summary with working
+      links instead of nothing. Keep it to the hero plus a project list, and
+      mirror the wording in src/content/profile.js.
+    -->
+    <style>
+      .shell-fallback {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
+        color: #16181a;
+        background: #faf7f0;
+      }
+      .shell-fallback .sf-wrap {
+        max-width: 74rem;
+        margin: 0 auto;
+        padding: 5rem 1.5rem;
+      }
+      .shell-fallback .sf-kicker {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0 0 1.5rem;
+        font-size: 0.6875rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #6b6a63;
+      }
+      .shell-fallback .sf-kicker::before {
+        content: '';
+        width: 1.25rem;
+        height: 1px;
+        background: #c9c0ac;
+      }
+      .shell-fallback h1 {
+        margin: 0;
+        font-family: Newsreader, Georgia, serif;
+        font-size: clamp(2.75rem, 8vw, 5.5rem);
+        line-height: 0.98;
+        letter-spacing: -0.035em;
+        font-weight: 400;
+      }
+      .shell-fallback .sf-roles {
+        margin: 1.75rem 0 0;
+        font-size: 0.8125rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #0f2b46;
+      }
+      .shell-fallback .sf-lede {
+        max-width: 36rem;
+        margin: 2.25rem 0 0;
+        font-size: 1.0625rem;
+        line-height: 1.65;
+        color: #3d4147;
+      }
+      .shell-fallback .sf-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.625rem;
+        margin-top: 2.5rem;
+      }
+      .shell-fallback .sf-btn {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #0f2b46;
+        background: #0f2b46;
+        color: #faf7f0;
+        padding: 0.625rem 1.25rem;
+        font-size: 0.8125rem;
+        text-decoration: none;
+      }
+      .shell-fallback .sf-link {
+        color: #0f2b46;
+        font-size: 0.8125rem;
+        text-underline-offset: 4px;
+      }
+      .shell-fallback .sf-list {
+        margin: 3.5rem 0 0;
+        padding: 1.75rem 0 0;
+        border-top: 1px solid #ddd6c6;
+        list-style: none;
+        display: grid;
+        gap: 1rem;
+      }
+      .shell-fallback .sf-list a {
+        color: #0f2b46;
+      }
+      .shell-fallback .sf-list strong {
+        font-weight: 500;
+      }
+      .shell-fallback .sf-list p {
+        margin: 0.25rem 0 0;
+        color: #6b6a63;
+        font-size: 0.875rem;
+        line-height: 1.55;
+      }
+      @media (prefers-color-scheme: dark) {
+        .shell-fallback {
+          color: #f1efe9;
+          background: #17181b;
+        }
+        .shell-fallback .sf-lede {
+          color: #c5c4be;
+        }
+        .shell-fallback .sf-roles,
+        .shell-fallback .sf-link,
+        .shell-fallback .sf-list a {
+          color: #8aacd0;
+        }
+        .shell-fallback .sf-list {
+          border-top-color: #2c2f35;
+        }
+      }
+      @media print {
+        .shell-fallback {
+          display: none;
+        }
+      }
+    </style>
 
     <script type="application/ld+json">
       {
@@ -85,7 +244,43 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="shell-fallback">
+        <div class="sf-wrap">
+          <p class="sf-kicker">Pune, India</p>
+          <h1>Niraj Chaudhari</h1>
+          <p class="sf-roles">
+            Financial Analysis &middot; Corporate Finance &middot; FP&amp;A &middot;
+            Financial Modelling &amp; Valuation &middot; Credit Risk Analysis
+          </p>
+          <p class="sf-lede">
+            MBA Finance candidate at MIT World Peace University, building fully linked
+            financial models from published statements. That work spans three-statement
+            forecasting, DCF valuation and credit-risk analysis, reported against what the
+            numbers actually support.
+          </p>
+          <p class="sf-actions">
+            <a class="sf-btn" href="/Niraj-Chaudhari-Resume.pdf" download>Niraj-Chaudhari-Resume.pdf</a>
+            <a class="sf-link" href="mailto:nirajchaudhari170503@gmail.com">Email</a>
+            <a class="sf-link" href="https://www.linkedin.com/in/niraj-chaudharii">LinkedIn</a>
+          </p>
+          <ul class="sf-list">
+            <li>
+              <a href="/projects/varun-beverages"><strong>Varun Beverages Ltd.</strong></a>
+              <p>Three-statement model and DCF valuation, rebuilt from published statements.</p>
+            </li>
+            <li>
+              <a href="/projects/loan-default"><strong>Loan Default Analysis &amp; Prediction</strong></a>
+              <p>Feature engineering and classification modelling on high-dimensional borrower data.</p>
+            </li>
+            <li>
+              <a href="/projects/jubilant-foodworks"><strong>Jubilant Foodworks Ltd.</strong></a>
+              <p>A five-year decomposition of the cash conversion cycle, FY2021&ndash;FY2025.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

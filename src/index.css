@@ -28,7 +28,7 @@
 
   --color-ink: #16181a;
   --color-ink-2: #3d4147;
-  --color-ink-3: #6b6a63;
+  --color-ink-3: #67665f;
 
   /* Structure */
   --color-navy: #0f2b46;
@@ -89,12 +89,10 @@
 
   :root {
     color-scheme: light;
-    /* The header is now a single 56px row at every breakpoint, so one value
-       covers all of them. Anchor scrolling uses this and nothing else:
-       previously scroll-padding-top and per-section scroll-margin compounded,
-       which landed every anchor about 110px too high and left the previous
-       section's tail visible. */
-    --header-h: 4.5rem;
+    /* Must match the header row height in SiteHeader (h-14 = 3.5rem, plus its
+       1px bottom border). Anchor scrolling and scroll-padding both read this
+       one token, so a header redesign changes it in a single place. */
+    --header-h: 3.5rem;
   }
 
   .dark {
@@ -191,7 +189,9 @@
 
   .kicker {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    /* 12px, not smaller. These labels are read, not just decoration, and
+       wide letter-spacing buys back legibility but not the size. */
+    font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -270,17 +270,31 @@
   }
 }
 
-/* Scroll reveal. Opt-in, respects reduced motion. */
-.reveal {
+/* --------------------------------------------------------------------------
+   Scroll reveal.
+
+   Opt-in, respects reduced motion, and fails SAFE: the hidden start state is
+   scoped to `.js`, which the inline script in index.html sets. If the bundle
+   never runs, the reveal rule never applies and content is simply visible
+   rather than stuck at opacity 0.
+
+   No `will-change` here. A permanent will-change on ~40 elements promotes each
+   one to its own compositor layer for the whole page lifetime, which costs
+   memory and can be slower than the 620ms transform it is meant to help. A
+   one-shot opacity/translate transition does not need it.
+--------------------------------------------------------------------------- */
+.js .reveal:not([data-visible='true']) {
   opacity: 0;
   transform: translateY(14px);
+}
+
+.reveal {
   transition:
     opacity 620ms cubic-bezier(0.22, 1, 0.36, 1),
     transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
 }
 
-.reveal[data-visible='true'] {
+.js .reveal[data-visible='true'] {
   opacity: 1;
   transform: none;
 }
@@ -290,7 +304,7 @@
     scroll-behavior: auto;
   }
 
-  .reveal {
+  .js .reveal {
     opacity: 1;
     transform: none;
     transition: none;

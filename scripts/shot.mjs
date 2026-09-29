@@ -9,7 +9,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
-const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+const CHROME = process.env.CHROME_PATH ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 
 const [url, out] = process.argv.slice(2)
 const flag = (name, fallback) => {
@@ -70,7 +70,8 @@ ws.addEventListener('message', (event) => {
   if (msg.id && pending.has(msg.id)) {
     const { resolve, reject } = pending.get(msg.id)
     pending.delete(msg.id)
-    msg.error ? reject(new Error(JSON.stringify(msg.error))) : resolve(msg.result)
+    if (msg.error) reject(new Error(JSON.stringify(msg.error)))
+    else resolve(msg.result)
   }
 })
 

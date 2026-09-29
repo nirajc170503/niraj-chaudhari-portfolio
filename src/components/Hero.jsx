@@ -24,7 +24,7 @@ function Action({ href, children, variant = 'quiet', download }) {
     <a
       href={href}
       {...(download ? { download } : {})}
-      className="inline-flex items-center px-1 py-1 font-mono text-[0.6875rem] tracking-[0.12em] text-ink-2 uppercase underline-offset-4 transition-colors hover:text-navy hover:underline hover:decoration-1"
+      className="inline-flex items-center px-1 py-1 font-mono text-xs tracking-[0.12em] text-ink-2 uppercase underline-offset-4 transition-colors hover:text-navy hover:underline hover:decoration-1"
     >
       {children}
     </a>
@@ -58,11 +58,11 @@ export default function Hero() {
               <p className="mt-7">
                 {profile.targetRoles.map((role, i) => (
                   <span key={role} className="inline-block whitespace-nowrap">
-                    <span className="font-mono text-[clamp(0.6875rem,0.9vw,0.8125rem)] tracking-[0.1em] text-navy uppercase">
+                    <span className="font-mono text-[clamp(0.75rem,0.9vw,0.8125rem)] tracking-[0.1em] text-navy uppercase">
                       {role}
                     </span>
                     {i < profile.targetRoles.length - 1 ? (
-                      <span aria-hidden="true" className="mx-2.5 text-navy/35 text-[clamp(0.6875rem,0.9vw,0.8125rem)]">
+                      <span aria-hidden="true" className="mx-2.5 text-navy/35 text-[clamp(0.75rem,0.9vw,0.8125rem)]">
                         ·
                       </span>
                     ) : null}
@@ -78,7 +78,7 @@ export default function Hero() {
             </Reveal>
 
             <Reveal delay={210}>
-              <p className="mt-8 flex items-center gap-2.5 font-mono text-[0.6875rem] tracking-[0.12em] text-ink-3 uppercase">
+              <p className="mt-8 flex items-center gap-2.5 font-mono text-xs tracking-[0.12em] text-ink-3 uppercase">
                 <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-forest" />
                 {profile.availability}
               </p>
@@ -100,19 +100,34 @@ export default function Hero() {
 
           {/* Right: the portrait. The frame is a matted print mount sized to the
               photo's own proportions; nothing is cropped. On desktop the top
-              edge aligns with the name; on mobile it stacks below the text. */}
+              edge aligns with the name; on mobile it stacks below the text.
+
+              Three widths of a WebP are served and the JPEG is kept as the
+              fallback, so the browser takes 23-106 kB instead of 202 kB. The
+              `width`/`height` pair stays on the `img` in every branch: it fixes
+              the aspect ratio before the image loads, which is what keeps this
+              from being a layout shift. */}
           <Reveal delay={150} className="w-full max-w-[22.5rem] justify-self-center lg:mt-10 lg:max-w-none">
             <div className="border border-rule bg-paper-2 p-3">
-              <img
-                src={profile.photo.src}
-                alt={profile.photo.alt}
-                width={profile.photo.width}
-                height={profile.photo.height}
-                loading="eager"
-                decoding="async"
-                fetchPriority="high"
-                className="h-auto w-full"
-              />
+              <picture>
+                <source
+                  type="image/webp"
+                  srcSet="/hero-photo-480.webp 480w, /hero-photo-768.webp 768w, /hero-photo-1200.webp 1200w"
+                  sizes="(min-width: 1024px) 360px, (min-width: 640px) 360px, 92vw"
+                />
+                <img
+                  src={profile.photo.src}
+                  srcSet="/hero-photo-480.jpg 480w, /hero-photo-768.jpg 768w, /hero-photo.jpg 1200w"
+                  sizes="(min-width: 1024px) 360px, (min-width: 640px) 360px, 92vw"
+                  alt={profile.photo.alt}
+                  width={profile.photo.width}
+                  height={profile.photo.height}
+                  loading="eager"
+                  decoding="async"
+                  fetchPriority="high"
+                  className="h-auto w-full"
+                />
+              </picture>
             </div>
           </Reveal>
         </div>

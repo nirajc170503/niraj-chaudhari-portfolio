@@ -7,7 +7,7 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
-const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+const CHROME = process.env.CHROME_PATH ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 const url = process.argv[2] ?? 'http://localhost:4317/'
 const profile = mkdtempSync(join(tmpdir(), 'cdp-diag-'))
 const port = 9900 + Math.floor(Math.random() * 90)
@@ -65,7 +65,8 @@ ws.addEventListener('message', (e) => {
   if (m.id && pending.has(m.id)) {
     const { resolve, reject } = pending.get(m.id)
     pending.delete(m.id)
-    m.error ? reject(new Error(JSON.stringify(m.error))) : resolve(m.result)
+    if (m.error) reject(new Error(JSON.stringify(m.error)))
+    else resolve(m.result)
   }
 })
 

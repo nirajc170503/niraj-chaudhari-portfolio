@@ -7,7 +7,7 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
-const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+const CHROME = process.env.CHROME_PATH ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 const url = process.argv[2] ?? 'http://localhost:4317/'
 const widths = (process.argv.slice(3).length ? process.argv.slice(3) : ['375', '390', '768', '1440']).map(Number)
 
@@ -59,7 +59,8 @@ ws.addEventListener('message', (event) => {
   if (msg.id && pending.has(msg.id)) {
     const { resolve, reject } = pending.get(msg.id)
     pending.delete(msg.id)
-    msg.error ? reject(new Error(JSON.stringify(msg.error))) : resolve(msg.result)
+    if (msg.error) reject(new Error(JSON.stringify(msg.error)))
+    else resolve(msg.result)
   }
 })
 
@@ -83,12 +84,26 @@ async function evaluate(expression) {
 const AUDIT = `(() => {
   const vw = document.documentElement.clientWidth;
   const offenders = [];
+
+  // An element wider than the viewport is only a bug if nothing can scroll to
+  // reach it. Wide tables live inside an overflow-x-auto wrapper on purpose:
+  // the table scrolls, the page does not. So check for a scrollable ancestor
+  // before reporting.
+  const inScrollable = (el) => {
+    for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) {
+      const cs = getComputedStyle(p);
+      if (/(auto|scroll|hidden)/.test(cs.overflowX)) return true;
+    }
+    return false;
+  };
+
   document.querySelectorAll('body *').forEach((el) => {
     const r = el.getBoundingClientRect();
     if (r.width === 0 && r.height === 0) return;
     if (r.right > vw + 1.5 || r.left < -1.5) {
       const cs = getComputedStyle(el);
       if (cs.position === 'fixed' || cs.overflow === 'hidden') return;
+      if (inScrollable(el)) return;
       offenders.push({
         tag: el.tagName.toLowerCase(),
         cls: (el.className && typeof el.className === 'string' ? el.className : '').slice(0, 90),
@@ -99,18 +114,41 @@ const AUDIT = `(() => {
     }
   });
 
+  // WCAG 2.2 Target Size (Minimum) is 24x24. Anything at or above that passes;
+  // 32px is this project's own comfort preference, reported separately so a
+  // real failure is never lost in a list of nice-to-haves.
+  const AA_MIN = 24;
+  const PREFERRED = 32;
+
   const smallTargets = [];
+  const underPreferred = [];
   document.querySelectorAll('a[href], button').forEach((el) => {
     const r = el.getBoundingClientRect();
     if (r.width === 0 || r.height === 0) return;
-    if (r.height < 32) {
-      smallTargets.push({
-        tag: el.tagName.toLowerCase(),
-        h: Math.round(r.height),
-        w: Math.round(r.width),
-        text: (el.textContent || '').trim().slice(0, 40),
-      });
+    if (r.height >= PREFERRED) return;
+
+    // WCAG 2.2 exempts links that sit inline in a sentence, where the size is
+    // fixed by the surrounding line height, and visually hidden skip links.
+    // Both are compliant; flagging them would train us to ignore this output.
+    const cs = getComputedStyle(el);
+    const label = (el.textContent || '').trim();
+    const visuallyHidden =
+      (cs.clip === 'rect(0px, 0px, 0px, 0px)' || cs.clipPath.includes('inset(50%)')) &&
+      r.width <= 2 &&
+      r.height <= 2;
+    if (visuallyHidden) return;
+    if (cs.display.startsWith('inline') && el.closest('p, li, dd, figcaption') && label.length > 12) {
+      return; // inline in prose
     }
+
+    const entry = {
+      tag: el.tagName.toLowerCase(),
+      h: Math.round(r.height),
+      w: Math.round(r.width),
+      text: label.slice(0, 40),
+    };
+    if (r.height < AA_MIN) smallTargets.push(entry);
+    else underPreferred.push(entry);
   });
 
   const fonts = {};
@@ -126,6 +164,7 @@ const AUDIT = `(() => {
     hasHScroll: document.documentElement.scrollWidth > vw + 1,
     offenders: offenders.slice(0, 12),
     smallTargets: smallTargets.slice(0, 12),
+    underPreferred: underPreferred.slice(0, 12),
     fontSizes: fonts,
     docHeight: document.documentElement.scrollHeight,
   };

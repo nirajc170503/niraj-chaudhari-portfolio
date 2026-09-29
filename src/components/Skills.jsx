@@ -23,7 +23,7 @@ const HEADING_ACCENTS = ['text-navy', 'text-forest', 'text-ochre']
 
 const certificates = certificateGroups
   .flatMap((group) => group.items)
-  .sort((a, b) => recency(b.date) - recency(a.date))
+  .toSorted((a, b) => recency(b.date) - recency(a.date))
 
 export default function Skills() {
   return (
@@ -36,7 +36,7 @@ export default function Skills() {
             <Reveal key={group.id} delay={i * 60} className="min-w-0">
               <div className="flex items-baseline gap-3">
                 <h3
-                  className={`font-mono text-[0.6875rem] tracking-[0.16em] uppercase ${
+                  className={`font-mono text-xs tracking-[0.16em] uppercase ${
                     HEADING_ACCENTS[i % HEADING_ACCENTS.length]
                   }`}
                 >
@@ -79,7 +79,7 @@ export default function Skills() {
                     {item.title}
                     <span className="sr-only"> (opens the certificate PDF in a new tab)</span>
                   </span>
-                  <span className="mt-1 flex items-center justify-between gap-3 font-mono text-[0.6875rem] tracking-wide text-ink-3">
+                  <span className="mt-1 flex items-center justify-between gap-3 font-mono text-xs tracking-wide text-ink-3">
                     <span>
                       {item.issuer}, {item.date}
                     </span>

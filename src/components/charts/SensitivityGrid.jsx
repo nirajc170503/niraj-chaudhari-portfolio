@@ -24,7 +24,7 @@ function Grid({ data, baseRowIndex, baseColIndex }) {
           <tr>
             <th
               scope="col"
-              className="bg-paper-2 px-3 py-2 text-left font-mono text-[0.6875rem] tracking-wider text-ink-3 uppercase whitespace-nowrap"
+              className="bg-paper-2 px-3 py-2 text-left font-mono text-xs tracking-wider text-ink-3 uppercase whitespace-nowrap"
             >
               {data.rowLabel} ↓ / {data.colLabel} →
             </th>
@@ -32,7 +32,7 @@ function Grid({ data, baseRowIndex, baseColIndex }) {
               <th
                 key={col}
                 scope="col"
-                className="bg-paper-2 px-3 py-2 text-right font-mono text-[0.6875rem] font-medium tracking-wider text-ink-2 whitespace-nowrap"
+                className="bg-paper-2 px-3 py-2 text-right font-mono text-xs font-medium tracking-wider text-ink-2 whitespace-nowrap"
               >
                 {col}
               </th>
@@ -44,7 +44,7 @@ function Grid({ data, baseRowIndex, baseColIndex }) {
             <tr key={data.rowHeaders[r]}>
               <th
                 scope="row"
-                className="bg-paper-2 px-3 py-2 text-left font-mono text-[0.6875rem] font-medium tracking-wider text-ink-2 whitespace-nowrap"
+                className="bg-paper-2 px-3 py-2 text-left font-mono text-xs font-medium tracking-wider text-ink-2 whitespace-nowrap"
               >
                 {data.rowHeaders[r]}
               </th>
@@ -95,7 +95,7 @@ export default function SensitivityGrid() {
         <Grid data={sensitivity.exitMultiple} baseRowIndex={0} baseColIndex={2} />
       </div>
 
-      <p className="font-mono text-[0.6875rem] tracking-wide text-ink-3">
+      <p className="font-mono text-xs tracking-wide text-ink-3">
         Values are ₹ per share, computed in the model's own sensitivity tables. Tint rises with value.
       </p>
     </div>

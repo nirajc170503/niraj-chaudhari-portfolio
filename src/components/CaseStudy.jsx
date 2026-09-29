@@ -20,7 +20,7 @@ export function CaseStudyLayout({ project, children }) {
         <div className="shell py-10 md:py-14">
           <Link
             to="/#projects"
-            className="group -mx-2 inline-flex items-center gap-2 px-2 py-2 font-mono text-[0.6875rem] tracking-[0.12em] text-ink-3 uppercase transition-colors hover:text-navy"
+            className="group -mx-2 inline-flex items-center gap-2 px-2 py-2 font-mono text-xs tracking-[0.12em] text-ink-3 uppercase transition-colors hover:text-navy"
           >
             <span aria-hidden="true" className="transition-transform group-hover:-translate-x-1">
               ←
@@ -48,7 +48,7 @@ export function CaseStudyLayout({ project, children }) {
               <p className={`tnum font-display text-[clamp(2.5rem,6vw,3.5rem)] leading-none tracking-[-0.03em] ${accent}`}>
                 {project.headline.value}
               </p>
-              <p className="mt-2 font-mono text-[0.6875rem] tracking-wide text-ink-3">
+              <p className="mt-2 font-mono text-xs tracking-wide text-ink-3">
                 {project.headline.unit}
               </p>
               <p className="mt-4 text-[0.875rem] leading-relaxed text-ink-2">{project.headline.context}</p>
@@ -56,7 +56,7 @@ export function CaseStudyLayout({ project, children }) {
               <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-rule pt-5">
                 {project.facts.map((fact) => (
                   <div key={fact.label} className="min-w-0">
-                    <dt className="font-mono text-[0.6875rem] tracking-[0.1em] text-ink-3 uppercase">
+                    <dt className="font-mono text-xs tracking-[0.1em] text-ink-3 uppercase">
                       {fact.label}
                     </dt>
                     <dd className="tnum mt-1 text-[0.9375rem] text-ink">{fact.value}</dd>
@@ -80,7 +80,7 @@ export function CaseStudyLayout({ project, children }) {
                     href={`#${section.id}`}
                     className="flex gap-3 py-1 text-[0.8125rem] text-ink-3 transition-colors hover:text-navy"
                   >
-                    <span className="tnum font-mono text-[0.6875rem] leading-5 text-ink-3">
+                    <span className="tnum font-mono text-xs leading-5 text-ink-3">
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     <span className="leading-5">{section.heading}</span>
@@ -93,7 +93,7 @@ export function CaseStudyLayout({ project, children }) {
               <p className="kicker mb-3 text-ink-3">Tools</p>
               <ul className="flex flex-wrap gap-x-3 gap-y-1.5">
                 {project.tools.map((tool) => (
-                  <li key={tool} className="font-mono text-[0.6875rem] text-ink-2">
+                  <li key={tool} className="font-mono text-xs text-ink-2">
                     {tool}
                   </li>
                 ))}
@@ -117,7 +117,7 @@ export function CaseSection({ id, index, heading, children }) {
       className="mt-10 border-t border-rule pt-7 first:mt-0 first:border-t-0 first:pt-0"
     >
       <div className="mb-5 flex items-baseline gap-4">
-        <span className="tnum font-mono text-[0.6875rem] tracking-wider text-ink-3">
+        <span className="tnum font-mono text-xs tracking-wider text-ink-3">
           {String(index).padStart(2, '0')}
         </span>
         <h2 className="font-display text-[clamp(1.375rem,3.2vw,1.875rem)] leading-snug tracking-[-0.02em] text-ink">
@@ -157,22 +157,30 @@ function alignmentFor(rows, columnIndex, head) {
   return values.every((value) => NUMERIC.test(value)) ? 'right' : 'left'
 }
 
+/**
+ * A table needs an accessible name, and `<caption>` is the only element that
+ * provides one. The caption used to be a sibling `<p>`, which screen readers
+ * never associate with the table, so the table announced only as "table, 4
+ * columns, 6 rows" with no indication of what it held. `caption-side: top`
+ * keeps it visually in the same place it was.
+ */
 export function DataTable({ caption, head, rows }) {
   const aligns = head.map((_, i) => alignmentFor(rows, i, head))
+  const label = caption ?? head.filter(Boolean).join(', ')
 
   return (
     <div className="mt-5">
-      {caption ? <p className="kicker mb-3 text-ink-3">{caption}</p> : null}
       <div className="relative">
         <div className="overflow-x-auto border-t border-rule-strong">
           <table className="w-full min-w-[34rem] border-collapse text-left text-[0.875rem]">
+            <caption className="kicker mb-3 text-left text-ink-3">{label}</caption>
             <thead>
               <tr className="border-b border-rule">
                 {head.map((cell, i) => (
                   <th
                     key={cell}
                     scope="col"
-                    className={`py-2.5 pr-4 font-mono text-[0.6875rem] tracking-[0.1em] text-ink-3 uppercase ${
+                    className={`py-2.5 pr-4 font-mono text-xs tracking-[0.1em] text-ink-3 uppercase ${
                       aligns[i] === 'right' ? 'text-right' : 'text-left'
                     }`}
                   >
@@ -210,7 +218,7 @@ export function DataTable({ caption, head, rows }) {
           className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-paper to-transparent sm:hidden"
         />
       </div>
-      <p className="mt-1.5 font-mono text-[0.6875rem] tracking-wide text-ink-3 sm:hidden">
+      <p className="mt-1.5 font-mono text-xs tracking-wide text-ink-3 sm:hidden">
         Swipe the table to see all columns →
       </p>
     </div>
@@ -222,7 +230,7 @@ export function StepList({ steps }) {
     <ol className="mt-6 space-y-5">
       {steps.map((step, i) => (
         <li key={step.title} className="grid grid-cols-[2.25rem_1fr] gap-x-4">
-          <span className="tnum pt-0.5 font-mono text-[0.6875rem] tracking-wider text-ochre">
+          <span className="tnum pt-0.5 font-mono text-xs tracking-wider text-ochre">
             {String(i + 1).padStart(2, '0')}
           </span>
           <div className="min-w-0">
@@ -254,7 +262,7 @@ export function CaseStudyFooter({ project, next }) {
       <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-rule pt-6">
         <Link
           to="/#projects"
-          className="group -mx-2 inline-flex items-center gap-2 px-2 py-2 font-mono text-[0.6875rem] tracking-[0.12em] text-ink uppercase transition-colors hover:text-navy"
+          className="group -mx-2 inline-flex items-center gap-2 px-2 py-2 font-mono text-xs tracking-[0.12em] text-ink uppercase transition-colors hover:text-navy"
         >
           <span aria-hidden="true" className="transition-transform group-hover:-translate-x-1">
             ←
@@ -268,7 +276,7 @@ export function CaseStudyFooter({ project, next }) {
             className="group inline-flex items-center gap-3 py-2 text-right transition-colors hover:text-navy"
           >
             <span>
-              <span className="block font-mono text-[0.6875rem] tracking-[0.12em] text-ink-3 uppercase">
+              <span className="block font-mono text-xs tracking-[0.12em] text-ink-3 uppercase">
                 Next case study
               </span>
               <span className="mt-1 block font-display text-[1.125rem] text-ink group-hover:text-navy">
