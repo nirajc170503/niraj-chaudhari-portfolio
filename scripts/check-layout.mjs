@@ -99,6 +99,9 @@ const chrome = spawn(
     '--no-first-run',
     '--no-default-browser-check',
     '--hide-scrollbars',
+    // GitHub Actions runs as root, where Chromium's sandbox refuses to start.
+    // Locally the sandbox stays on.
+    ...(process.env.CI ? ['--no-sandbox'] : []),
     `--remote-debugging-port=${port}`,
     `--user-data-dir=${profile}`,
     'about:blank',
