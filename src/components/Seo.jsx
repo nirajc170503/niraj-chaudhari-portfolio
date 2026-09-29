@@ -44,17 +44,18 @@ export default function Seo({ title, description, path, type = 'website', image,
     if (title) document.title = title
 
     const url = path ? absoluteUrl(path) : null
+    const imageUrl = image ? absoluteUrl(image) : null
 
     setContent('meta[name="description"]', description)
     setContent('meta[property="og:title"]', title)
     setContent('meta[property="og:description"]', description)
     setContent('meta[property="og:type"]', type)
     setContent('meta[property="og:url"]', url)
-    setContent('meta[property="og:image"]', image)
+    setContent('meta[property="og:image"]', imageUrl)
 
     setContent('meta[name="twitter:title"]', title)
     setContent('meta[name="twitter:description"]', description)
-    setContent('meta[name="twitter:image"]', image)
+    setContent('meta[name="twitter:image"]', imageUrl)
 
     setHref('canonical', url)
 

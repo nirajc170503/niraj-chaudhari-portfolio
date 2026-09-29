@@ -70,7 +70,7 @@ export default function Skills() {
             {certificates.map((item, i) => (
               <Reveal as="li" key={item.id} delay={Math.min(i, 5) * 40} className="min-w-0">
                 <a
-                  href={item.file}
+                  href={`${import.meta.env.BASE_URL}${item.file.slice(1)}`}
                   target="_blank"
                   rel="noreferrer noopener"
                   className="group block"

@@ -54,7 +54,7 @@ export default class ErrorBoundary extends Component {
             Reload
           </button>
           <a
-            href="/"
+            href={import.meta.env.BASE_URL}
             className="inline-flex items-center px-1 py-1 font-mono text-xs tracking-[0.12em] text-ink-2 uppercase underline-offset-4 transition-colors hover:text-navy hover:underline hover:decoration-1"
           >
             Back to home

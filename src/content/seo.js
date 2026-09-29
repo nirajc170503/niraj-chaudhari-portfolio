@@ -11,7 +11,7 @@
  * would eventually drift, which is exactly the kind of bug that is invisible
  * until a search index has already formed.
  */
-export const ORIGIN = 'https://nirajchaudhari.com'
+export const ORIGIN = 'https://nirajc170503.github.io/niraj-chaudhari-portfolio'
 
 export const SITE_NAME = 'Niraj Chaudhari'
 
@@ -75,5 +75,8 @@ export function routeSeo(pathname) {
 }
 
 export function absoluteUrl(path) {
-  return new URL(path, ORIGIN).toString()
+  // A leading '/' must be trimmed, otherwise `new URL` resolves it against the
+  // domain root and drops the repo's subpath (the GitHub Pages project base).
+  const relative = path.replace(/^\//, '')
+  return new URL(relative, `${ORIGIN}/`).toString()
 }

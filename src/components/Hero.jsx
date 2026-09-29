@@ -112,12 +112,12 @@ export default function Hero() {
               <picture>
                 <source
                   type="image/webp"
-                  srcSet="/hero-photo-480.webp 480w, /hero-photo-768.webp 768w, /hero-photo-1200.webp 1200w"
+                  srcSet={`${import.meta.env.BASE_URL}hero-photo-480.webp 480w, ${import.meta.env.BASE_URL}hero-photo-768.webp 768w, ${import.meta.env.BASE_URL}hero-photo-1200.webp 1200w`}
                   sizes="(min-width: 1024px) 360px, (min-width: 640px) 360px, 92vw"
                 />
                 <img
                   src={profile.photo.src}
-                  srcSet="/hero-photo-480.jpg 480w, /hero-photo-768.jpg 768w, /hero-photo.jpg 1200w"
+                  srcSet={`${import.meta.env.BASE_URL}hero-photo-480.jpg 480w, ${import.meta.env.BASE_URL}hero-photo-768.jpg 768w, ${import.meta.env.BASE_URL}hero-photo.jpg 1200w`}
                   sizes="(min-width: 1024px) 360px, (min-width: 640px) 360px, 92vw"
                   alt={profile.photo.alt}
                   width={profile.photo.width}

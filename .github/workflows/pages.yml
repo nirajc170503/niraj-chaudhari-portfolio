@@ -1,0 +1,55 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Only the Pages deploy needs these. `contents: read` keeps the workflow able
+# to check out the repo; `pages: write` lets it publish; `id-token: write`
+# authenticates to Pages without a stored token.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # The site is served from /niraj-chaudhari-portfolio/, so the build must
+      # reference assets under that base (vite.config.js reads BASE_PATH).
+      - name: Build
+        run: BASE_PATH=/niraj-chaudhari-portfolio/ npm run build
+
+      # GitHub Pages does not rewrite unknown paths to index.html, so a direct
+      # visit to /projects/varun-beverages would 404. Serving the same app as
+      # 404.html makes those deep links boot the router, which then renders the
+      # route the browser asked for.
+      - name: SPA fallback for deep links
+        run: cp dist/index.html dist/404.html
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
